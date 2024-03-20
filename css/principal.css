@@ -128,3 +128,16 @@ button:hover {
     margin-top: 10px; /* Ajusta este margen según sea necesario */
 }
 
+#conjuntoB {
+    max-width: 90%; /* Por ejemplo, ajusta el valor según tus necesidades */
+    width: 100%;
+    box-sizing: border-box; /* Asegura que el ancho incluya el padding y el borde */
+}
+
+@media screen and (max-width: 768px) {
+    /* Estilos específicos para dispositivos móviles */
+    #conjuntoB {
+        max-width: 100%;
+    }
+}
+
