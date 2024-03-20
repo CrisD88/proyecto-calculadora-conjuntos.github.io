@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home</title>
+<link rel="icon" href="images/icono/pngwing.com.ico" type="image/png">
+<link rel="stylesheet" href="css/principal.css">
+</head>
+<body>
+  <header>
+      <div class="logo">
+          <img src="images/Inicio/pngwing.com.png" alt="Vacio.png"/>
+      </div>
+      <h1>Calculadora de Conjuntos</h1>
+  </header>
+
+  <div class="contenedor-universo">
+      <label for="universo">U:</label>
+      <input type="text" id="universo" placeholder="Ejemplo: 1, 2, 3...">
+  </div>
+
+  <div class="contenedor-conjuntos">
+      <div class="conjunto">
+          <label for="conjuntoA">A:</label>
+          <input type="text" id="conjuntoA" placeholder="Ejemplo: 1, 2, 3...">
+      </div>
+      <div class="conjunto">
+          <label for="conjuntoB">B:</label>
+          <input type="text" id="conjuntoB" placeholder="Ejemplo: 1, 2, 3...">
+      </div>
+  </div>
+
+  <div class="contenedor-botones">
+      <div class="button-row">
+        <button onclick="verificarSubconjuntos()">⊆</button>
+        <button onclick="calcularUnion()">∪</button>
+      </div>
+      <div class="button-row">
+        <button onclick="calcularInterseccion()">∩</button>
+        <button onclick="calcularResta()">-</button>
+      </div>
+      <div class="button-row">
+        <button onclick="calcularConjuntoPotencia()">P(x)</button>
+        <button onclick="calcularComplementos()">X'</button>
+      </div>
+      <div class="button-row">
+        <button onclick="calcularProductoCruz()">AxB</button>
+        <button onclick="calcularRelaciones()">R(x,y)</button>
+      </div>
+      <div class="button-row">
+        <button onclick="calcularDiferenciaSimetrica()">∆</button>
+        <button onclick="calcularCardinalidades()">| A |</button>
+      </div>
+  </div>
+
+  <div class="contenedor-borrar">
+    <button onclick="limpiarResultado()" class="borrar">Limpiar</button>
+  </div>
+
+  <div id="resultado"></div>
+  
+  <footer>
+      <p>© Copyright 2024. Sánchez Santiago Cristopher Damian</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
