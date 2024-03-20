@@ -76,10 +76,14 @@ button:hover {
 
 .contenedor-conjuntos {
     display: flex;
-    justify-content: space-between; /* Distribuye los elementos en los extremos */
-    align-items: center; /* Centra verticalmente los elementos */
+    flex-direction: column; /* Cambia la dirección del flexbox a columna */
+    align-items: center; /* Centra los elementos horizontalmente */
     margin-top: 20px;
     padding: 0 20px; /* Agrega espacio entre los inputs y los bordes de la página */
+}
+
+.contenedor-conjuntos div {
+    margin-bottom: 10px; /* Agrega espacio entre los divs que contienen los inputs */
 }
 
 .contenedor-conjuntos label {
@@ -106,7 +110,7 @@ button:hover {
 }
 
 .contenedor-conjuntos input[type="text"] {
-    flex-grow: 1; /* El input toma el espacio restante */
+    width: 300px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -127,17 +131,3 @@ button:hover {
     text-align: right;
     margin-top: 10px; /* Ajusta este margen según sea necesario */
 }
-
-#conjuntoB {
-    max-width: 90%; /* Por ejemplo, ajusta el valor según tus necesidades */
-    width: 100%;
-    box-sizing: border-box; /* Asegura que el ancho incluya el padding y el borde */
-}
-
-@media screen and (max-width: 768px) {
-    /* Estilos específicos para dispositivos móviles */
-    #conjuntoB {
-        max-width: 100%;
-    }
-}
-
