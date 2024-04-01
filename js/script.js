@@ -451,4 +451,93 @@ function calcularDiferenciaSimetrica() {
     resultadoDiv.innerHTML = definicion + "Diferencia simétrica: {" + diferenciaSimetrica.join(", ") + "}";
 }
 
+// tepox :P
 
+/*
+--------------------------------------------Regiones------------------------------------
+*/
+function CalcularRegion(){
+  // Obtener los conjuntos ingresados por el usuario
+  var universo = document.getElementById('Universo').value.split(',');
+  var conjuntoa = document.getElementById('ConjuntoA').value.split(',');
+  var conjuntob = document.getElementById('ConjuntoB').value.split(',');
+  var conjuntoc = document.getElementById('ConjuntoC').value.split(',');
+  // Calcular las Regiones de los conjuntos
+  var R1 = calcularR1(conjuntoa, conjuntob, conjuntoc);
+  var R2 = calcularR2(conjuntoa, conjuntob, conjuntoc);
+  var R3 = calcularR3(conjuntoa, conjuntob, conjuntoc);
+
+  var R4 = calcularR4(conjuntoa, conjuntob, conjuntoc);
+  var R5 = calcularR5(conjuntoa, conjuntob, conjuntoc);
+  var R6 = calcularR6(conjuntoa, conjuntob, conjuntoc);
+
+  var R7 = calcularR7(conjuntoa, conjuntob, conjuntoc);
+  var R8 = calcularR8(universo, conjuntoa, conjuntob, conjuntoc);
+  // Mostrar el resultado
+  mostrarResultadoRegion(R1, R2, R3, R4, R5, R6, R7, R8);
+}
+function calcularR1(conjuntoa, conjuntob, conjuntoc) {
+  //Diferencia entre los conjuntos
+  var tempo = conjuntoa.filter(elemento => !conjuntob.includes(elemento));
+  //console.log(tempo);
+  var R1 = tempo.filter(elemento => !conjuntoc.includes(elemento));
+  return R1;
+}
+function calcularR2(conjuntoa, conjuntob, conjuntoc) {
+  //var union = Array.from(new Set([...conjuntoa, ...conjuntob]));
+  var tempo = conjuntob.filter(elemento => !conjuntoa.includes(elemento));
+  //console.log(tempo);
+  var R2 = tempo.filter(elemento => !conjuntoc.includes(elemento));
+  return R2;
+}
+function calcularR3(conjuntoa, conjuntob, conjuntoc) {
+  //var union = Array.from(new Set([...conjuntoa, ...conjuntob]));
+  var tempo = conjuntoc.filter(elemento => !conjuntoa.includes(elemento));
+  //console.log(tempo);
+  var R3 = tempo.filter(elemento => !conjuntob.includes(elemento));
+  return R3;
+}
+function calcularR4(conjuntoa, conjuntob, conjuntoc) {
+  //Interseccion de elementos
+  var tempo = conjuntoa.filter(elemento => conjuntoc.includes(elemento));
+  //Diferencia del conjunto respecto a la interseccion
+  var R5 = tempo.filter(elemento => !conjuntob.includes(elemento));
+  return R5;
+}
+function calcularR5(conjuntoa, conjuntob, conjuntoc) {
+  //Interseccion de elementos
+  var tempo = conjuntoa.filter(elemento => conjuntob.includes(elemento));
+  //Diferencia del conjunto respecto a la interseccion
+  var R4 = tempo.filter(elemento => !conjuntoc.includes(elemento));
+  return R4;
+}
+function calcularR6(conjuntoa, conjuntob, conjuntoc) {
+  //Interseccion de elementos
+  var tempo = conjuntoc.filter(elemento => conjuntob.includes(elemento));
+  //Diferencia del conjunto respecto a la interseccion
+  var R6 = tempo.filter(elemento => !conjuntoa.includes(elemento));
+  return R6;
+}
+function calcularR7(conjuntoa, conjuntob, conjuntoc) {
+  //Interseccion de los tres conjuntos
+  var tempo = conjuntoa.filter(elemento => conjuntob.includes(elemento));
+  var R7 = tempo.filter(elemento => conjuntoc.includes(elemento));
+  return R7;
+}
+function calcularR8(universo, conjuntoa, conjuntob, conjuntoc) {
+  //Union de los tres conjuntos
+  var ab = Array.from(new Set([...conjuntoa, ...conjuntob]));
+  var abc = Array.from(new Set([...ab, ...conjuntoc]));
+  //Diferencia de Universo respecto a la union 
+  var R8 = universo.filter(elemento => !abc.includes(elemento));
+  return R8;
+}
+function mostrarResultadoRegion(R1, R2, R3, R4, R5, R6, R7, R8) {
+  var resultadoContainer = document.getElementById('resultado');
+  //var cardinalidad = R1.length;
+  
+  resultadoContainer.innerHTML = 'Elementos: ' + '<br>' + '<br>' + 
+  '<strong>Region 1:</strong> ' + JSON.stringify(R1) + '<br>' + '<br>' + '<strong>Region 2:</strong> ' + JSON.stringify(R2) + '<br>' + '<br>' + '<strong>Region 3:</strong> ' + JSON.stringify(R3) + '<br>' + '<br>' + '<strong>Region 4:</strong> ' + JSON.stringify(R4) + '<br>' + '<br>' + '<strong>Region 5:</strong> ' + JSON.stringify(R5) + '<br>' + '<br>' + '<strong>Region 6:</strong> ' + JSON.stringify(R6) + '<br>' + '<br>' + '<strong>Region 7:</strong> ' + JSON.stringify(R7) + '<br>' + '<br>' + '<strong>Region 8:</strong> ' + JSON.stringify(R8) + '<br>';
+
+  /* resultadoContainer.innerHTML = '<strong>Unión de Conjuntos:</strong><p>' + 'Elementos: ' + JSON.stringify(union) + '</p><p>' + 'Cardinalidad: ' + cardinalidad + '</p>'; */
+}
