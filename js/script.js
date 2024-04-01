@@ -458,10 +458,10 @@ function calcularDiferenciaSimetrica() {
 */
 function CalcularRegion(){
   // Obtener los conjuntos ingresados por el usuario
-  var universo = document.getElementById('Universo').value.split(',');
-  var conjuntoa = document.getElementById('ConjuntoA').value.split(',');
-  var conjuntob = document.getElementById('ConjuntoB').value.split(',');
-  var conjuntoc = document.getElementById('ConjuntoC').value.split(',');
+  var universo = document.getElementById('universo').value.split(',');
+  var conjuntoa = document.getElementById('conjuntoA').value.split(',');
+  var conjuntob = document.getElementById('conjuntoB').value.split(',');
+  var conjuntoc = document.getElementById('conjuntoC').value.split(',');
   // Calcular las Regiones de los conjuntos
   var R1 = calcularR1(conjuntoa, conjuntob, conjuntoc);
   var R2 = calcularR2(conjuntoa, conjuntob, conjuntoc);
