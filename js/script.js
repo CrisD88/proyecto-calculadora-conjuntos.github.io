@@ -541,3 +541,56 @@ function mostrarResultadoRegion(R1, R2, R3, R4, R5, R6, R7, R8) {
 
   /* resultadoContainer.innerHTML = '<strong>Unión de Conjuntos:</strong><p>' + 'Elementos: ' + JSON.stringify(union) + '</p><p>' + 'Cardinalidad: ' + cardinalidad + '</p>'; */
 }
+
+/* 
+----------------------------Composiciones--------------------------------
+*/
+
+function CalcularComposicion(){
+  // Obtener los conjuntos ingresados por el usuario
+    //Relacion A
+  var temp2 = document.getElementById('relacionA').value.split(')').join('');
+  var temp1 = temp2.split('(').join('');
+  var Relacion1 = temp1.split(',');
+
+    //Relacion B
+  var temp2 = document.getElementById('relacionB').value.split(')').join('');
+  var temp1 = temp2.split('(').join('');
+  var Relacion2 = temp1.split(','); 
+    
+  // Calcular la composicion de las relaciones
+  var Relacion3 = calcularComposicion(Relacion1, Relacion2);
+
+  mostrarResultadoComposicion(Relacion3);
+}
+function calcularComposicion (Relacion1, Relacion2){
+  var Relacion3 = [];
+  var tempo = [];
+  tempo[0] = [];
+  var l = 1;
+  for (var i = 1; i < Relacion1.length; i+=2) {
+    for (var j = 0; j < Relacion2.length; j+=2) {
+      if(Relacion1[i] == Relacion2[j]){
+        tempo.push("(" + Relacion1[i-1] + ", " + Relacion2[j+1] + ")");
+        console.log(tempo);
+        var bool = true;
+        for (var k = 0; k < l; k++){
+          if (tempo[k] == tempo[l]){
+            bool = false;
+          }
+        }
+        if (bool == true) {
+          Relacion3 = Relacion3.concat(tempo[l]);
+        }
+        l += 1;
+        console.log(Relacion3);
+      }
+    }
+  }
+  return Relacion3;
+}
+function mostrarResultadoComposicion (Relacion3){
+  var resultadoContainer = document.getElementById('resultado');
+  resultadoContainer.innerHTML = 'Composicion de A -> C: ' + '<br>' + '<strong>Relacion 3:</strong> ' + JSON.stringify(Relacion3) + '<br>' + '<br>';
+}
+
