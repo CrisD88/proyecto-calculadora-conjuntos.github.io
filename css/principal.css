@@ -62,7 +62,7 @@ button {
     border: 1px solid gray;
     border-radius: 5px;
     cursor: pointer;
-    width: 150px;
+    width: 180px;
 }
 
 button:hover {
