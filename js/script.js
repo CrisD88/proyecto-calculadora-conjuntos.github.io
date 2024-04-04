@@ -600,7 +600,7 @@ function CalcularComposicion(){
 
 function calcularBinarias(){
     var ConjuntoA = document.getElementById('conjuntoA').value.split(',');
-    var temp2 = document.getElementById('Relacion1').value.split(')').join('');
+    var temp2 = document.getElementById('relacion1').value.split(')').join('');
     var temp1 = temp2.split('(').join('');
     var Relacion = temp1.split(',');
 
