@@ -603,7 +603,7 @@ function calcularBinarias(){
     var temp2 = document.getElementById('relacionA').value.split(')').join('');
     var temp1 = temp2.split('(').join('');
     var Relacion = temp1.split(',');
-
+    
     var des = 0;
 
   //Reflexiva
@@ -671,79 +671,74 @@ function calcularBinarias(){
     else{
       var Simetria = 'La relacion no es Simetrica';
     }
-    //return Simetria;
 
     var orden;
     var cont;
     var mi = [];
     var ma = [];
 
-    console.log(des);
-
-    //Para los Relaciones que contienen menos de 3 propiedades
     if(des < 6){
         orden = '∴ La relacion no pertenece a ninugun orden';
         mostrarResultadoBinario(Reflexiva, Simetria, Transitiva, Antisimetria, orden)
     }
-    //Para los elementos que contienen Reflexividad, Transitividad y Antisimetria
-    //si quieres y puedes ve como puede mejorarlo, si no pos ya chingue su madre xd
     if (des == 6){
         orden = '∴ La relacion es de Orden Parcial';
-        //Calcula Maximales y Minimales
         for (var i = 0; i < ConjuntoA.length; i++){
             cont = 0;
             for (var j = 0; j < Relacion.length; j+=2){
                 if (ConjuntoA[i] == Relacion[j]){
+                    //console.log(ConjuntoA[i]);
                     cont += 1;
+                    //console.log('Cont: '+cont);
                 }
             }
-            //Recibe los maximales, puesto que solo aparecen una vez
             if (cont == 1){
                 console.log(ConjuntoA[i]);
                 ma = ma.concat(ConjuntoA[i]);
             }
-            //Recibe los minimales que son usados un poco menos que el tamaño del Conjunto A
             if (cont >= ConjuntoA.length-1){
-                //num = cont;
                 mi = mi.concat(ConjuntoA[i]);
-                //console.log(nc);
             }
         }
         var minimales = 'Los minimales son: '+mi;
-        //minimales = minimales.concat(mi);
         var maximales = 'Los maximales son: '+ma;
-        //mostrarResultadoParcial(Reflexiva, Transitiva, Antisimetria, orden, minimales );
         mostrarResultadoParcial(Reflexiva, Simetria, Transitiva, Antisimetria, orden, minimales, maximales);
     }
-    //Para los elementos que contienen Reflexividad, Transitividad y Simetria 
     if (des == 7){
-        orden = '∴ La relacion es de Relacion Equivalente';
-        //Tendria que ir aquila funcion para los conjutos disjuntos o como veas 
-        //Este codigo calcula los conjutos disjuntos pero no se como hacer para que se duplique 
-        //ConDis = array abreviado de Conjunto Disjunto, tempo = temporal, comp segun yo lo puse para compar pero no supe como hacer
+        orden = '∴ La relacion es una Relacion Equivalente';
+        //Comprobar la Particion inducida
+        var comp = [];
         var ConDis = [];
+        var ConCos = [];
+        var p = 1;
         for (var k = 0; k < ConjuntoA.length; k++){
-            //t = 0;
-            var comp = [];
-            var tempo = [];
-            tempo.push(ConjuntoA[k]);
-            comp.push(ConjuntoA[k]);
-            for (var i = 0; i < Relacion.length; i+=2){
-                if (ConjuntoA[k] == Relacion[i] && ConjuntoA[k] != Relacion[i+1]){
-                    var bool = true;
-                    console.log(Relacion[i]);
-                    tempo.push(Relacion[i+1]);
-                    comp.push(Relacion[i+1]);
+            var  bool1 = true;
+            for (u = 0; u < comp.length; u++){
+                if (comp[u] == ConjuntoA[k]){
+                    bool1 = false;
                 }
             }
-            if (bool == true){
-                ConDis.push("{" + tempo + "}");
+            if (bool1 == true){
+                var tempo = [];
+                ConCos.push('[' + ConjuntoA[k] + ']');
+                tempo.push(ConjuntoA[k]);
+                comp.push(ConjuntoA[k]);
+                for (var i = 0; i < Relacion.length; i+=2){
+                    if (ConjuntoA[k] == Relacion[i] && ConjuntoA[k] != Relacion[i   +1]){
+                        for (var j = 1; j < Relacion.length; j++){
+                            if (Relacion[i] == Relacion[j]){
+                                tempo.push(Relacion[i+1]);
+                                j += Relacion.length;
+                            }
+                        }
+                        comp.push(Relacion[i+1]);
+                    }
+                }
+                ConDis.push(' A'+ p + " = {" + tempo + "}");
+                p += 1;
             }
-            console.log(ConDis[k])
         }
-        console.log(tempo);
-        
-        mostrarResultadoEquivalente(Reflexiva, Simetria, Transitiva, Antisimetria, orden, ConDis)
+        mostrarResultadoEquivalente(Reflexiva, Simetria, Transitiva, Antisimetria, orden, ConDis, ConCos)
     }
     if (des == 10){
         orden = '∴ La relacion es de Orden Total';
@@ -751,19 +746,18 @@ function calcularBinarias(){
     }
     
 }
-//Mostrar por el orden parcial
+//resultado de Orden parcial
 function mostrarResultadoParcial(Reflexiva, Simetria, Transitiva, Antisimetria, orden, minimales, maximales){
     var resultadoContainer = document.getElementById('resultado');
-    resultadoContainer.innerHTML = 'Relacion: ' + '<br>' + '<strong>Relacion 3:</strong> ' + '<br>' + JSON.stringify(Reflexiva) + '<br>' + JSON.stringify(Simetria) + '<br>' + JSON.stringify(Antisimetria) + '<br>' + JSON.stringify(Transitiva) + '<br>' + '<br>' + JSON.stringify(orden) + '<br>' + JSON.stringify(minimales) + '<br>' + JSON.stringify(maximales);
+    resultadoContainer.innerHTML = '<strong>Relacion :</strong> ' + '<br>' + JSON.stringify(Reflexiva) + '<br>' + JSON.stringify(Simetria) + '<br>' + JSON.stringify(Antisimetria) + '<br>' + JSON.stringify(Transitiva) + '<br>' + '<br>' + JSON.stringify(orden) + '<br>' + JSON.stringify(minimales) + '<br>' + JSON.stringify(maximales);
 }
-//Mostrar por la Relacion de Equivalencia
-function mostrarResultadoEquivalente(Reflexiva, Simetria, Transitiva, Antisimetria, orden, tempo){
+//resultado de relacion equivalente
+function mostrarResultadoEquivalente(Reflexiva, Simetria, Transitiva, Antisimetria, orden, ConDis, ConCos){
     var resultadoContainer = document.getElementById('resultado');
-    resultadoContainer.innerHTML = 'Relacion: ' + '<br>' + '<strong>Relacion 3:</strong> ' + '<br>' + JSON.stringify(Reflexiva) + '<br>' + JSON.stringify(Simetria) + '<br>' + JSON.stringify(Antisimetria) + '<br>' + JSON.stringify(Transitiva) + '<br>' + '<br>' + JSON.stringify(orden) + '<br>' + JSON.stringify(tempo) + '<br>' /*+ JSON.stringify(maximales)*/;
+    resultadoContainer.innerHTML = '<strong>Relacion :</strong> ' + '<br>' + JSON.stringify(Reflexiva) + '<br>' + JSON.stringify(Simetria) + '<br>' + JSON.stringify(Antisimetria) + '<br>' + JSON.stringify(Transitiva) + '<br>' + '<br>' + JSON.stringify(orden) + '<br> Conjunto Cociente: ' + JSON.stringify(ConCos) + '<br> Particion Inducida: ' + JSON.stringify(ConDis);
 }
-//Para los casos de Orden total(creo) y para los que no pertenecen a ninugun orden
+//para relacion total o ninguna
 function mostrarResultadoBinario(Reflexiva, Simetria, Transitiva, Antisimetria, orden){
     var resultadoContainer = document.getElementById('resultado');
-    resultadoContainer.innerHTML = 'Relacion: ' + '<br>' + '<strong>Relacion 3:</strong> ' + '<br>' + JSON.stringify(Reflexiva) + '<br>' + JSON.stringify(Simetria) + '<br>' + JSON.stringify(Antisimetria) + '<br>' + JSON.stringify(Transitiva) + '<br>' + '<br>' + JSON.stringify(orden);
+    resultadoContainer.innerHTML = '<strong>Relacion :</strong> ' + '<br>' + JSON.stringify(Reflexiva) + '<br>' + JSON.stringify(Simetria) + '<br>' + JSON.stringify(Antisimetria) + '<br>' + JSON.stringify(Transitiva) + '<br>' + '<br>' + JSON.stringify(orden);
 }
-
