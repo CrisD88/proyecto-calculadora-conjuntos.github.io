@@ -761,3 +761,79 @@ function mostrarResultadoBinario(Reflexiva, Simetria, Transitiva, Antisimetria, 
     var resultadoContainer = document.getElementById('resultado');
     resultadoContainer.innerHTML = '<strong>Relacion :</strong> ' + '<br>' + JSON.stringify(Reflexiva) + '<br>' + JSON.stringify(Simetria) + '<br>' + JSON.stringify(Antisimetria) + '<br>' + JSON.stringify(Transitiva) + '<br>' + '<br>' + JSON.stringify(orden);
 }
+
+function mostrarMatrizRelacion() {
+    var conjuntoA = document.getElementById('conjuntoA').value.split(',').map(function(item) {
+        return item.trim();
+    });
+    conjuntoA.sort(); // Ordenamos el conjunto A
+
+    var relacion = document.getElementById('relacionA').value.split(',').map(function(item) {
+        return item.trim().replace('(', '').replace(')', '').split(',');
+    });
+
+    // Obtener el conjunto B a partir de la relación
+    var conjuntoB = [];
+    relacion.forEach(function(par) {
+        par.forEach(function(elemento) {
+            if (!conjuntoB.includes(elemento)) {
+                conjuntoB.push(elemento);
+            }
+        });
+    });
+    conjuntoB.sort(); // Ordenamos el conjunto B
+
+    var matrizRelacion = [];
+    for (var i = 0; i < conjuntoA.length; i++) {
+        matrizRelacion[i] = [];
+        for (var j = 0; j < conjuntoB.length; j++) {
+            matrizRelacion[i][j] = 0;
+        }
+    }
+
+    relacion.forEach(function(par) {
+        if(par.length === 2) { // Verifica que el par tenga dos elementos
+            var indiceA = conjuntoA.indexOf(par[0].trim());
+            var indiceB = conjuntoB.indexOf(par[1].trim());
+            if(indiceA !== -1 && indiceB !== -1) { // Verifica que los elementos estén en los conjuntos
+                matrizRelacion[indiceA][indiceB] = 1;
+            }
+        }
+    });
+
+    console.log('Matriz de relación:');
+    console.log(matrizRelacion); // Agregar este console.log para depurar y verificar la matriz de relación en la consola
+
+    var resultado = document.getElementById('resultado');
+    resultado.innerHTML = ''; // Limpiamos cualquier contenido previo
+
+    var tabla = document.createElement('table');
+    var encabezado = tabla.createTHead().insertRow();
+    encabezado.insertCell().appendChild(document.createTextNode('')); // Celda vacía para el encabezado
+
+    // Agregar encabezados de columna
+    conjuntoB.forEach(function(elemento) {
+        encabezado.insertCell().appendChild(document.createTextNode(elemento));
+    });
+
+    // Agregar filas
+    conjuntoA.forEach(function(fila, indiceFila) {
+        var row = tabla.insertRow();
+        row.insertCell().appendChild(document.createTextNode(fila)); // Agregar encabezado de fila
+        matrizRelacion[indiceFila].forEach(function(valor) {
+            var cell = row.insertCell();
+            cell.appendChild(document.createTextNode(valor));
+        });
+    });
+
+    resultado.appendChild(tabla);
+}
+
+
+
+
+
+
+
+
+
