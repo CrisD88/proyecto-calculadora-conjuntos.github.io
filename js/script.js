@@ -766,23 +766,26 @@ function mostrarMatrizRelacion() {
     var conjuntoA = document.getElementById('conjuntoA').value.split(',').map(function(item) {
         return item.trim();
     });
-    console.log('Conjunto A:', conjuntoA);
 
     conjuntoA.sort();
-    console.log('Conjunto A ordenado:', conjuntoA);
 
     var relacionInput = document.getElementById('relacionA');
     var relacion = relacionInput.value.match(/\((\d+),(\d+)\)/g);
-    console.log('Relación:', relacion);
 
-    // Imprimir el título en la consola
-    var titulo = "Matriz de Relación"; // Título fijo para la matriz de relación
-    console.log("Título:", titulo);
+    // Obtener los pares ordenados de la relación para mostrar en el título
+    var paresOrdenados = relacion ? relacion.join(', ') : '';
 
-    // Crear el elemento de título y agregarlo al DOM
-    var tituloElemento = document.createElement('h2');
-    tituloElemento.textContent = titulo;
-    document.getElementById('resultado').appendChild(tituloElemento);
+    // Crear el texto del título que incluye los pares ordenados de la relación
+    var tituloTexto = "Matriz de Relación: " + paresOrdenados;
+
+    // Crear el elemento de título y establecer su contenido
+    var tituloElemento = document.createElement('p');
+    tituloElemento.textContent = tituloTexto;
+
+    // Agregar el título al contenedor de resultado en la página
+    var resultado = document.getElementById('resultado');
+    resultado.innerHTML = ''; // Limpiar cualquier contenido previo
+    resultado.appendChild(tituloElemento);
 
     var matrizRelacion = [];
     for (var i = 0; i < conjuntoA.length; i++) {
@@ -796,26 +799,16 @@ function mostrarMatrizRelacion() {
         var elementos = par.match(/\d+/g);
         var elementoA = parseInt(elementos[0]);
         var elementoB = parseInt(elementos[1]);
-        console.log('Par ordenado:', par);
-        console.log('Elemento A:', elementoA);
-        console.log('Elemento B:', elementoB);
 
         var indiceA = conjuntoA.indexOf(elementoA.toString());
         var indiceB = conjuntoA.indexOf(elementoB.toString());
-        console.log('Índice A:', indiceA);
-        console.log('Índice B:', indiceB);
 
         if (indiceA !== -1 && indiceB !== -1) {
             matrizRelacion[indiceA][indiceB] = 1;
         }
     });
 
-    console.log('Matriz de relación:');
-    console.log(matrizRelacion);
-
-    var resultado = document.getElementById('resultado');
-    resultado.innerHTML = '';
-
+    // Crear y agregar la tabla de la matriz de relación
     var tabla = document.createElement('table');
     var encabezado = tabla.createTHead().insertRow();
     encabezado.insertCell().appendChild(document.createTextNode(''));
