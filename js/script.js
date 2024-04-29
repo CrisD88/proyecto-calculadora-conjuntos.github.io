@@ -673,7 +673,7 @@ function calcularBinarias(){
     }
 
     var orden;
-    var cont;
+    var mac, mic;
     var mi = [];
     var ma = [];
 
@@ -684,19 +684,20 @@ function calcularBinarias(){
     if (des == 6){
         orden = '∴ La relacion es de Orden Parcial';
         for (var i = 0; i < ConjuntoA.length; i++){
-            cont = 0;
+            mac = 0;
+            mic = 0;
             for (var j = 0; j < Relacion.length; j+=2){
                 if (ConjuntoA[i] == Relacion[j]){
-                    //console.log(ConjuntoA[i]);
                     cont += 1;
-                    //console.log('Cont: '+cont);
+                }
+                if (ConjuntoA[i] == Relacion[j+1]){
+                    mic += 1;
                 }
             }
-            if (cont == 1){
-                console.log(ConjuntoA[i]);
+            if (mac == 1){
                 ma = ma.concat(ConjuntoA[i]);
             }
-            if (cont >= ConjuntoA.length-1){
+            if (mic == 1){
                 mi = mi.concat(ConjuntoA[i]);
             }
         }
