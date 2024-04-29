@@ -688,7 +688,7 @@ function calcularBinarias(){
             mic = 0;
             for (var j = 0; j < Relacion.length; j+=2){
                 if (ConjuntoA[i] == Relacion[j]){
-                    cont += 1;
+                    mac += 1;
                 }
                 if (ConjuntoA[i] == Relacion[j+1]){
                     mic += 1;
