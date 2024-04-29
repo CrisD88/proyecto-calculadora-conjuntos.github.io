@@ -766,60 +766,67 @@ function mostrarMatrizRelacion() {
     var conjuntoA = document.getElementById('conjuntoA').value.split(',').map(function(item) {
         return item.trim();
     });
-    conjuntoA.sort(); // Ordenamos el conjunto A
+    console.log('Conjunto A:', conjuntoA);
 
-    var relacion = document.getElementById('relacionA').value.split(',').map(function(item) {
-        return item.trim().replace('(', '').replace(')', '').split(',');
-    });
+    conjuntoA.sort();
+    console.log('Conjunto A ordenado:', conjuntoA);
 
-    // Obtener el conjunto B a partir de la relación
-    var conjuntoB = [];
-    relacion.forEach(function(par) {
-        par.forEach(function(elemento) {
-            if (!conjuntoB.includes(elemento)) {
-                conjuntoB.push(elemento);
-            }
-        });
-    });
-    conjuntoB.sort(); // Ordenamos el conjunto B
+    var relacionInput = document.getElementById('relacionA');
+    var relacion = relacionInput.value.match(/\((\d+),(\d+)\)/g);
+    console.log('Relación:', relacion);
+
+    // Imprimir el título en la consola
+    var titulo = "Matriz de Relación"; // Título fijo para la matriz de relación
+    console.log("Título:", titulo);
+
+    // Crear el elemento de título y agregarlo al DOM
+    var tituloElemento = document.createElement('h2');
+    tituloElemento.textContent = titulo;
+    document.getElementById('resultado').appendChild(tituloElemento);
 
     var matrizRelacion = [];
     for (var i = 0; i < conjuntoA.length; i++) {
         matrizRelacion[i] = [];
-        for (var j = 0; j < conjuntoB.length; j++) {
+        for (var j = 0; j < conjuntoA.length; j++) {
             matrizRelacion[i][j] = 0;
         }
     }
 
     relacion.forEach(function(par) {
-        if(par.length === 2) { // Verifica que el par tenga dos elementos
-            var indiceA = conjuntoA.indexOf(par[0].trim());
-            var indiceB = conjuntoB.indexOf(par[1].trim());
-            if(indiceA !== -1 && indiceB !== -1) { // Verifica que los elementos estén en los conjuntos
-                matrizRelacion[indiceA][indiceB] = 1;
-            }
+        var elementos = par.match(/\d+/g);
+        var elementoA = parseInt(elementos[0]);
+        var elementoB = parseInt(elementos[1]);
+        console.log('Par ordenado:', par);
+        console.log('Elemento A:', elementoA);
+        console.log('Elemento B:', elementoB);
+
+        var indiceA = conjuntoA.indexOf(elementoA.toString());
+        var indiceB = conjuntoA.indexOf(elementoB.toString());
+        console.log('Índice A:', indiceA);
+        console.log('Índice B:', indiceB);
+
+        if (indiceA !== -1 && indiceB !== -1) {
+            matrizRelacion[indiceA][indiceB] = 1;
         }
     });
 
     console.log('Matriz de relación:');
-    console.log(matrizRelacion); // Agregar este console.log para depurar y verificar la matriz de relación en la consola
+    console.log(matrizRelacion);
 
     var resultado = document.getElementById('resultado');
-    resultado.innerHTML = ''; // Limpiamos cualquier contenido previo
+    resultado.innerHTML = '';
 
     var tabla = document.createElement('table');
     var encabezado = tabla.createTHead().insertRow();
-    encabezado.insertCell().appendChild(document.createTextNode('')); // Celda vacía para el encabezado
+    encabezado.insertCell().appendChild(document.createTextNode(''));
 
-    // Agregar encabezados de columna
-    conjuntoB.forEach(function(elemento) {
+    conjuntoA.forEach(function(elemento) {
         encabezado.insertCell().appendChild(document.createTextNode(elemento));
     });
 
-    // Agregar filas
     conjuntoA.forEach(function(fila, indiceFila) {
         var row = tabla.insertRow();
-        row.insertCell().appendChild(document.createTextNode(fila)); // Agregar encabezado de fila
+        row.insertCell().appendChild(document.createTextNode(fila));
         matrizRelacion[indiceFila].forEach(function(valor) {
             var cell = row.insertCell();
             cell.appendChild(document.createTextNode(valor));
@@ -828,12 +835,3 @@ function mostrarMatrizRelacion() {
 
     resultado.appendChild(tabla);
 }
-
-
-
-
-
-
-
-
-
