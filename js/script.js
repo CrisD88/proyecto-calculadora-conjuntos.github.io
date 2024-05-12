@@ -175,7 +175,7 @@ function calcularInterseccion() {
     resultadoDiv.innerHTML = definicion + "A ∩ B = {" + interseccion.join(", ") + "}";
 }
 
-//Función que opera los conjuntos que el usuario dió
+ //Función que opera los conjuntos que el usuario dió
  function obtenerClasesDeEquivalencia(conjunto, modulo) {
     //Este set se crea para almacenar las clases unicas
     let clases = new Set(); 
