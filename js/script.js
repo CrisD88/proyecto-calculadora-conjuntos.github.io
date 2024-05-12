@@ -175,6 +175,53 @@ function calcularInterseccion() {
     resultadoDiv.innerHTML = definicion + "A ∩ B = {" + interseccion.join(", ") + "}";
 }
 
+//Función que opera los conjuntos que el usuario dió
+ function obtenerClasesDeEquivalencia(conjunto, modulo) {
+    //Este set se crea para almacenar las clases unicas
+    let clases = new Set(); 
+    //Trabaja cada elemento y calcula sus clases de equivalencia 
+    conjunto.forEach(elemento => {
+        let clase = elemento % modulo; //Formula para calcular la clase de equivalencia
+        clases.add(clase); //Agrega la clase al conjunto
+    });    
+    return clases; //Devuelve el conjunto de clases de equivalencia
+}
+
+//Función para imprimir los conjuntos resultantes
+function imprimirConjunto(nombre, conjunto) {
+    let conjuntoStr = nombre + ": {" + Array.from(conjunto).join(", ") + "}";
+    return conjuntoStr;
+}
+
+//Función para calcular y mostrar las clases de equivalencia
+function calcularClasesDeEquivalencia() {
+    //Se leen los elementos de los campos de texto de los conjuntos
+    let conjuntoA = document.getElementById("conjuntoA").value.split(",").map(elemento => parseInt(elemento.trim()));
+    let conjuntoB = document.getElementById("conjuntoB").value.split(",").map(elemento => parseInt(elemento.trim()));
+    let conjuntoC = document.getElementById("conjuntoC").value.split(",").map(elemento => parseInt(elemento.trim()));
+    //Se leen los elementos del campo de texto del módulo
+    let modulo = parseInt(document.getElementById("modulo").value);
+
+    //Llama a la función obtenerClasesDeEquivalencia para trabajar cada uno de los conjuntos dados por el usuario
+    let clasesConjuntoA = obtenerClasesDeEquivalencia(conjuntoA, modulo);
+    let clasesConjuntoB = obtenerClasesDeEquivalencia(conjuntoB, modulo);
+    let clasesConjuntoC = obtenerClasesDeEquivalencia(conjuntoC, modulo);
+
+    //Crea un conjunto con todas las clases de equivalencia únicas
+    let clasesTotales = new Set([...clasesConjuntoA, ...clasesConjuntoB, ...clasesConjuntoC]);
+
+    //Se imprimen los resultados en forma de cadena
+    let resultadosStr = `
+        <p>${imprimirConjunto("Clases de Equivalencia del Conjunto A", clasesConjuntoA)}</p>
+        <p>${imprimirConjunto("Clases de Equivalencia del Conjunto B", clasesConjuntoB)}</p>
+        <p>${imprimirConjunto("Clases de Equivalencia del Conjunto C", clasesConjuntoC)}</p>
+        <p>${imprimirConjunto("Conjunto de todas las Clases de Equivalencia Únicas", clasesTotales)}</p>
+    `;
+
+    //Muestra los resultados
+    document.getElementById("resultado").innerHTML = resultadosStr;
+}
+
 function calcularResta() {
     // Obtener los conjuntos de los inputs
     var conjuntoA = document.getElementById("conjuntoA").value;
