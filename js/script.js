@@ -243,7 +243,7 @@ function operacionesConModulo(A, B, M) {
 }
 
 //Función para calcular la suma, resta, multiplicación y división trabajadas con módulo
-function algebraModular(){
+function calcularOperaciones(){
     let claseA = parseInt(document.getElementById("conjuntoA").value);
     let claseB = parseInt(document.getElementById("conjuntoB").value);    
     //Se leen los elementos del campo de texto del módulo
