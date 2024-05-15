@@ -187,9 +187,16 @@ function calcularInterseccion() {
     return clases; //Devuelve el conjunto de clases de equivalencia
 }
 
-//Función para imprimir los conjuntos resultantes
+//Función que imprime las clases de equivalencia entre []
 function imprimirConjunto(nombre, conjunto) {
-    let conjuntoStr = nombre + ": {" + Array.from(conjunto).join(", ") + "}";
+    let conjuntoStr = nombre + ": {";
+    Array.from(conjunto).forEach((elemento, index) => {
+        conjuntoStr += "[" + elemento + "]";
+        if (index < conjunto.size - 1) {
+            conjuntoStr += ", ";
+        }
+    });
+    conjuntoStr += "}";
     return conjuntoStr;
 }
 
