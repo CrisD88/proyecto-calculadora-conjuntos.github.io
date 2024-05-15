@@ -222,48 +222,6 @@ function calcularClasesDeEquivalencia() {
     document.getElementById("resultado").innerHTML = resultadosStr;
 }
 
-//Función para imprimir los conjuntos resultantes
-function imprimirOp(nombre, res) {
-    let Opstr = nombre + res;
-    return Opstr;
-}
-
-function operacionesConModulo(A, B, M) {
-    let suma = (A + B) % M;
-    let resta = (A - B) % M;
-    let multiplicacion = (A * B) % M;
-    let division = (A / B) % M; // División no es con módulo, pero aquí está incluido por consistencia
-
-    return {
-        suma: suma,
-        resta: resta,
-        multiplicacion: multiplicacion,
-        division: division
-    };
-}
-
-//Función para calcular la suma, resta, multiplicación y división trabajadas con módulo
-function calcularOperaciones(){
-    let claseA = parseInt(document.getElementById("conjuntoA").value);
-    let claseB = parseInt(document.getElementById("conjuntoB").value);    
-    //Se leen los elementos del campo de texto del módulo
-    let modulo = parseInt(document.getElementById("modulo").value);
-
-    let resultados = operacionesConModulo(claseA, claseB, modulo);
-
-    //Se imprimen los resultados en forma de cadena
-    let resultadosStr = `
-        <p>${imprimirOp("Clase de equivalencia de la suma: ", resultados.suma)}</p>
-        <p>${imprimirOp("Clase de equivalencia de la resta: ", resultados.resta)}</p>
-        <p>${imprimirOp("Clase de equivalencia de la multiplicación: ", resultado.multiplicacion)}</p>
-        <p>${imprimirOp("Clase de equivalencia de la división: ", resultados.division)}</p>
-    `;
-
-    //Muestra los resultados
-    document.getElementById("resultado").innerHTML = resultadosStr;
-
-}
-
 function calcularResta() {
     // Obtener los conjuntos de los inputs
     var conjuntoA = document.getElementById("conjuntoA").value;
