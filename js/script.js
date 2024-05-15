@@ -229,6 +229,52 @@ function calcularClasesDeEquivalencia() {
     document.getElementById("resultado").innerHTML = resultadosStr;
 }
 
+//Esta función se encarga de trabajar los datos obtenidos por la función operacionConModulo()
+//Calcula la suma, resta, multiplicación y división de los datos y los imprime de igual forma
+function opMod(datoA, datoB, modulo) {
+    //Los datos se convierten en numeros flotantes
+    datoA = parseFloat(datoA); 
+    datoB = parseFloat(datoB); 
+    modulo = parseFloat(modulo); 
+    
+    //Verificador de validez de datos
+    if (isNaN(datoA) || isNaN(datoB) || isNaN(modulo)) {
+        return "Error: Datos ingresados no válidos";
+    }
+
+    //Se hacen todas las operaciones con los datos proporcionados
+    let suma = (datoA + datoB) % modulo;
+    let resta = (datoA - datoB) % modulo;
+    let multiplicacion = (datoA * datoB) % modulo;
+
+    //Se calcula la división pero tambien se verifica si no se esta dividiendo entre cero
+    let division;
+    if (datoB !== 0) {
+        division = (datoA / datoB) % modulo;
+    } else {
+        division = "Error: No se puede dividir por cero";
+    }
+
+    //Imprime los resultados de cada operacion hecha 
+    var resultadoDiv = document.getElementById("resultado");
+    resultadoDiv.innerHTML = `
+        <p>Suma con módulo: [${suma}]</p>
+        <p>Resta con módulo: [${resta}]</p>
+        <p>Multiplicación con módulo: [${multiplicacion}]</p>
+        <p>División con módulo: [${division}]</p>
+    `;
+}
+
+//Esta función más que nada solo llama a los datos de los campos de texto y los coloca en la función opMod()
+function operacionesConModulo() {
+    //Se crean variables a partir de los datos obtenidos de los campos de texto 
+    let datoA = parseInt(document.getElementById("conjuntoA").value);
+    let datoB = parseInt(document.getElementById("conjuntoB").value);
+    let modulo = parseInt(document.getElementById("modulo").value);
+    //Se llama a la funcion opMod() y se le ingresan los datos obtenidos de los campos de texto
+    let res = opMod(datoA, datoB, modulo);
+}
+
 function calcularResta() {
     // Obtener los conjuntos de los inputs
     var conjuntoA = document.getElementById("conjuntoA").value;
