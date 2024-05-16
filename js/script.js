@@ -537,7 +537,7 @@ function calcularDiferenciaSimetrica() {
         return item !== "";
     });
 
-    // Calcular la diferencia simétrica
+    // Calcular la diferencia simétrica A - B
     var diferenciaAB = conjuntoA.filter(function(elemento) {
         return !conjuntoB.includes(elemento);
     });
@@ -546,7 +546,27 @@ function calcularDiferenciaSimetrica() {
         return !conjuntoA.includes(elemento);
     });
 
-    var diferenciaSimetrica = diferenciaAB.concat(diferenciaBA);
+    var diferenciaSimetricaAB = diferenciaAB.concat(diferenciaBA);
+
+    // Calcular la diferencia simétrica A - C
+    var diferenciaAC = conjuntoA.filter(function(elemento) {
+        return !conjuntoC.includes(elemento);
+    });
+
+    var diferenciaCA = conjuntoC.filter(function(elemento) {
+        return !conjuntoA.includes(elemento);
+    });
+
+    var diferenciaSimetricaAC = diferenciaAC.concat(diferenciaCA);
+
+    // Calcular la diferencia simétrica B - C
+    var diferenciaBC = conjuntoB.filter(function(elemento) {
+        return !conjuntoC.includes(elemento);
+    });
+
+    var diferenciaCB = conjuntoC.filter(function(elemento) {
+        return !conjuntoB.includes(elemento);
+    });
 
     // Definición de la diferencia simétrica
     var definicion = "<p>Definición:</p>\n";
@@ -554,7 +574,7 @@ function calcularDiferenciaSimetrica() {
 
     // Mostrar el resultado
     var resultadoDiv = document.getElementById("resultado");
-    resultadoDiv.innerHTML = definicion + "Diferencia simétrica: {" + diferenciaSimetrica.join(", ") + "}";
+    resultadoDiv.innerHTML = definicion + "Diferencia simétrica A △ B: {" + diferenciaSimetricaAB.join(", ") + "}" + '<br>' + "Diferencia simétrica A △ C: {" + diferenciaSimetricaAC.join(", ") + "}" + '<br>' + "Diferencia simétrica B △ C: {" + diferenciaSimetricaBC.join(", ") + "}";
 }
 
 // tepox :P
