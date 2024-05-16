@@ -123,10 +123,11 @@ function verificarSubconjuntos() {
     resultadoDiv.innerHTML = resultado;
 }
 
-function calcularUnion() {   //PENDIENTE
+function calcularUnion() {
     // Obtener los conjuntos de los inputs
     var conjuntoA = document.getElementById("conjuntoA").value;
     var conjuntoB = document.getElementById("conjuntoB").value;
+    var conjuntoC = document.getElementById("conjuntoC").value;
 
     // Convertir los conjuntos en arrays
     var elementosA = conjuntoA.split(",").map(function(item) {
@@ -135,26 +136,28 @@ function calcularUnion() {   //PENDIENTE
     var elementosB = conjuntoB.split(",").map(function(item) {
         return item.trim();
     });
-
-    // Verificar si alguno de los conjuntos es vacío
-    if (elementosA.length === 0 && elementosB.length === 0) {
-        var resultadoDiv = document.getElementById("resultado");
-        resultadoDiv.textContent = "Ambos conjuntos son vacíos.";
-        return;
-    }
+    var elementosC = conjuntoC.split(",").map(function(item) {
+        return item.trim();
+    });
 
     // Unir los elementos de los conjuntos sin duplicados
-    var union = Array.from(new Set([...elementosA, ...elementosB]));
+    var unionAB = Array.from(new Set([...elementosA, ...elementosB])).sort();
+    var unionAC = Array.from(new Set([...elementosA, ...elementosC])).sort();
+    var unionBC = Array.from(new Set([...elementosB, ...elementosC])).sort();
+    var unionABC = Array.from(new Set([...elementosA, ...elementosB, ...elementosC])).sort();
 
-    // Convertir el resultado a una cadena separada por comas
-    var resultadoUnion = union.join(", ");
+    // Convertir los resultados a cadenas separadas por comas
+    var resultadoUnionAB = "{" + unionAB.join(", ") + "}";
+    var resultadoUnionAC = "{" + unionAC.join(", ") + "}";
+    var resultadoUnionBC = "{" + unionBC.join(", ") + "}";
+    var resultadoUnionABC = "{" + unionABC.join(", ") + "}";
 
-    // Definición de la unión
+    // Definición de las uniones
     var definicion = "<p>Definición:</p>\n<p>Unión: A ∪ B contiene todos los elementos que están presentes en al menos uno de los conjuntos A y B.</p>";
 
-    // Mostrar el resultado
+    // Mostrar los resultados
     var resultadoDiv = document.getElementById("resultado");
-    resultadoDiv.innerHTML = definicion + "A ∪ B = {" + resultadoUnion + "}";
+    resultadoDiv.innerHTML = definicion + "A ∪ B = " + resultadoUnionAB + "<br><br>A ∪ C = " + resultadoUnionAC + "<br><br>B ∪ C = " + resultadoUnionBC + "<br><br>A ∪ B ∪ C = " + resultadoUnionABC;
 }
 
 function calcularInterseccion() {
