@@ -537,6 +537,12 @@ function calcularDiferenciaSimetrica() {
         return item !== "";
     });
 
+    var conjuntoC = document.getElementById("conjuntoC").value.split(",").map(function(item) {
+        return item.trim();
+    }).filter(function(item) {
+        return item !== "";
+    });
+
     // Calcular la diferencia simétrica A - B
     var diferenciaAB = conjuntoA.filter(function(elemento) {
         return !conjuntoB.includes(elemento);
