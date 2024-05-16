@@ -574,6 +574,8 @@ function calcularDiferenciaSimetrica() {
         return !conjuntoB.includes(elemento);
     });
 
+    var diferenciaSimetricaBC = diferenciaBC.concat(diferenciaCB);
+
     // Definición de la diferencia simétrica
     var definicion = "<p>Definición:</p>\n";
     definicion += "<p>Diferencia simétrica: La diferencia simétrica entre dos conjuntos A y B, denotada como A △ B, es el conjunto que contiene todos los elementos que están en A pero no en B, junto con todos los elementos que están en B pero no en A.</p>";
