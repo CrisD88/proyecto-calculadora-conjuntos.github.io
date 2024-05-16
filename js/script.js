@@ -905,7 +905,7 @@ function mostrarMatrizRelacion() {
     conjuntoA.sort();
 
     var relacionInput = document.getElementById('relacionA');
-    var relacion = relacionInput.value.match(/\((\d+),(\d+)\)/g);
+    var relacion = relacionInput.value.match(/\((\w+),(\w+)\)/g); // Modificado para aceptar letras
 
     // Obtener los pares ordenados de la relación para mostrar en el título
     var paresOrdenados = relacion ? relacion.join(', ') : '';
@@ -931,12 +931,12 @@ function mostrarMatrizRelacion() {
     }
 
     relacion.forEach(function(par) {
-        var elementos = par.match(/\d+/g);
-        var elementoA = parseInt(elementos[0]);
-        var elementoB = parseInt(elementos[1]);
+        var elementos = par.match(/\w+/g); // Modificado para aceptar letras
+        var elementoA = elementos[0];
+        var elementoB = elementos[1];
 
-        var indiceA = conjuntoA.indexOf(elementoA.toString());
-        var indiceB = conjuntoA.indexOf(elementoB.toString());
+        var indiceA = conjuntoA.indexOf(elementoA);
+        var indiceB = conjuntoA.indexOf(elementoB);
 
         if (indiceA !== -1 && indiceB !== -1) {
             matrizRelacion[indiceA][indiceB] = 1;
