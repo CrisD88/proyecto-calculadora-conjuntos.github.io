@@ -1,8 +1,9 @@
 function calcularCardinalidades() {
-    // Obtener el universo, A y B del input
+    // Obtener el universo, A, B y C del input
     var universoInput = document.getElementById("universo").value;
     var conjuntoAInput = document.getElementById("conjuntoA").value;
     var conjuntoBInput = document.getElementById("conjuntoB").value;
+    var conjuntoCInput = document.getElementById("conjuntoC").value;
 
     // Convertir los conjuntos en arrays y filtrar elementos vacíos
     var elementosUniverso = universoInput.split(",").map(function(item) {
@@ -23,18 +24,26 @@ function calcularCardinalidades() {
         return item !== "";
     });
 
+    var elementosC = conjuntoCInput.split(",").map(function(item) {
+        return item.trim();
+    }).filter(function(item) {
+        return item !== "";
+    });
+
     // Calcular las cardinalidades
     var cardinalidadUniverso = elementosUniverso.length;
     var cardinalidadA = elementosA.length;
     var cardinalidadB = elementosB.length;
+    var cardinalidadC = elementosC.length;
 
     // Definición de la cardinalidad
     var definicion = "<p>Definición:</p>\n<p>Cardinalidad: Número de elementos que contiene.</p>";
 
     // Mostrar los resultados
     var resultadoDiv = document.getElementById("resultado");
-    resultadoDiv.innerHTML = definicion + "<br>Cardinalidad del Universo = " + cardinalidadUniverso + "<br>Cardinalidad de A = " + cardinalidadA + "<br>Cardinalidad de B = " + cardinalidadB;
+    resultadoDiv.innerHTML = definicion + "<br>Cardinalidad del Universo = " + cardinalidadUniverso + "<br>Cardinalidad de A = " + cardinalidadA + "<br>Cardinalidad de B = " + cardinalidadB + "<br>Cardinalidad de C = " + cardinalidadC;
 }
+
 
 
 function limpiarResultado() {
@@ -320,9 +329,10 @@ function calcularResta() {
 }
 
 function calcularConjuntoPotencia() {
-    // Obtener los conjuntos A y B del input
+    // Obtener los conjuntos A, B y C del input
     var conjuntoA = document.getElementById("conjuntoA").value;
     var conjuntoB = document.getElementById("conjuntoB").value;
+    var conjuntoC = document.getElementById("conjuntoC").value;
 
     // Función para obtener el conjunto potencia de un conjunto
     function obtenerConjuntoPotencia(conjunto) {
@@ -368,22 +378,24 @@ function calcularConjuntoPotencia() {
         return resultadoPartes;
     }
 
-    // Calcular el conjunto potencia de A y B
+    // Calcular el conjunto potencia de A, B y C
     var conjuntoPotenciaA = obtenerConjuntoPotencia(conjuntoA);
     var conjuntoPotenciaB = obtenerConjuntoPotencia(conjuntoB);
+    var conjuntoPotenciaC = obtenerConjuntoPotencia(conjuntoC);
 
     // Definición del conjunto de partes
     var definicion = "<p>Definición:</p>\n<p>Conjunto Potencia P(X): El conjunto potencia de un conjunto X es el conjunto que contiene todos los subconjuntos posibles de X, incluido el conjunto vacío y X mismo.</p>";
 
     // Mostrar los resultados
     var resultadoDiv = document.getElementById("resultado");
-    resultadoDiv.innerHTML = definicion + "P(A) = {" + conjuntoPotenciaA + "} <br> <br>P(B) = {" + conjuntoPotenciaB + "}";
+    resultadoDiv.innerHTML = definicion + "P(A) = {" + conjuntoPotenciaA + "} <br> <br>P(B) = {" + conjuntoPotenciaB + "} <br> <br>P(C) = {" + conjuntoPotenciaC + "}";
 }
 
 function calcularComplementos() {
-    // Obtener los conjuntos A, B y el universo del input
+    // Obtener los conjuntos A, B, C y el universo del input
     var conjuntoA = document.getElementById("conjuntoA").value;
     var conjuntoB = document.getElementById("conjuntoB").value;
+    var conjuntoC = document.getElementById("conjuntoC").value;
     var universo = document.getElementById("universo").value;
 
     // Convertir los conjuntos en arrays
@@ -391,6 +403,9 @@ function calcularComplementos() {
         return item.trim();
     });
     var elementosB = conjuntoB.split(",").map(function(item) {
+        return item.trim();
+    });
+    var elementosC = conjuntoC.split(",").map(function(item) {
         return item.trim();
     });
     var elementosUniverso = universo.split(",").map(function(item) {
@@ -404,21 +419,24 @@ function calcularComplementos() {
         });
     }
 
-    // Calcular los complementos de A y B
+    // Calcular los complementos de A, B y C
     var complementoA = obtenerComplemento(elementosA, elementosUniverso);
     var complementoB = obtenerComplemento(elementosB, elementosUniverso);
+    var complementoC = obtenerComplemento(elementosC, elementosUniverso);
 
     // Convertir los resultados a cadenas separadas por comas
     var resultadoComplementoA = "{" + complementoA.join(", ") + "}";
     var resultadoComplementoB = "{" + complementoB.join(", ") + "}";
+    var resultadoComplementoC = "{" + complementoC.join(", ") + "}";
 
     // Definición de los complementos
     var definicion = "<p>Definición:</p>\n<p>El complemento de un conjunto A con respecto a un universo U se define como el conjunto de todos los elementos en U que no están en A.</p>";
 
     // Mostrar los resultados
     var resultadoDiv = document.getElementById("resultado");
-    resultadoDiv.innerHTML = definicion + "A' = " + resultadoComplementoA + "<br><br> B' = " + resultadoComplementoB;
+    resultadoDiv.innerHTML = definicion + "A' = " + resultadoComplementoA + "<br><br> B' = " + resultadoComplementoB + "<br><br> C' = " + resultadoComplementoC;
 }
+
 
 function calcularProductoCruz() {
     // Obtener los conjuntos A y B del input
@@ -459,96 +477,6 @@ function calcularProductoCruz() {
     // Mostrar los resultados
     var resultadoDiv = document.getElementById("resultado");
     resultadoDiv.innerHTML = definicion + "A × B = " + resultadoProductoCruzAB + "<br><br>B × A = " + resultadoProductoCruzBA;
-}
-
-function calcularRelaciones() {
-    // Obtener los conjuntos del input
-    var conjuntoA = document.getElementById("conjuntoA").value.split(",").map(function(item) {
-        return item.trim();
-    }).filter(function(item) {
-        return item !== "";
-    });
-
-    var conjuntoB = document.getElementById("conjuntoB").value.split(",").map(function(item) {
-        return item.trim();
-    }).filter(function(item) {
-        return item !== "";
-    });
-
-    // Definición de las relaciones
-    var definicion = "<p>Definiciones:</p>\n";
-    definicion += "<p>Relación binaria: Una relación entre dos conjuntos es un subconjunto del producto cartesiano de los conjuntos.</p>";
-    definicion += "<p>Composición de relaciones: La composición de dos relaciones R y S es la relación que contiene todos los pares ordenados (a, c) tales que existe un elemento b para el cual (a, b) está en R y (b, c) está en S.</p>";
-    definicion += "<p>Relación de orden parcial: Una relación R es un orden parcial si es reflexiva, antisimétrica y transitiva.</p>";
-    definicion += "<p>Relación de equivalencia: Una relación R es de equivalencia si es reflexiva, simétrica y transitiva.</p>";
-
-    // Calcular relaciones binarias
-    var relacionBinaria = [];
-    for (var i = 0; i < conjuntoA.length; i++) {
-        for (var j = 0; j < conjuntoB.length; j++) {
-            relacionBinaria.push("(" + conjuntoA[i] + ", " + conjuntoB[j] + ")");
-        }
-    }
-
-    // Calcular composición de relaciones
-    var composicionRelaciones = [];
-    for (var i = 0; i < conjuntoA.length; i++) {
-        for (var j = 0; j < conjuntoB.length; j++) {
-            composicionRelaciones.push("(" + conjuntoA[i] + ", " + conjuntoB[j] + ")");
-        }
-    }
-
-    // Calcular relación de orden parcial
-    var relacionOrdenParcial = [];
-    for (var i = 0; i < conjuntoA.length; i++) {
-        for (var j = i; j < conjuntoA.length; j++) {
-            relacionOrdenParcial.push("(" + conjuntoA[i] + ", " + conjuntoA[j] + ")");
-        }
-    }
-
-    // Calcular relación de equivalencia
-    var relacionEquivalencia = [];
-    for (var i = 0; i < conjuntoA.length; i++) {
-        relacionEquivalencia.push("(" + conjuntoA[i] + ", " + conjuntoA[i] + ")");
-    }
-
-    // Mostrar los resultados
-    var resultadoDiv = document.getElementById("resultado");
-    resultadoDiv.innerHTML = definicion + "<br>Relación binaria = {" + relacionBinaria.join(", ") + "}<br><br>Composición de relaciones = {" + composicionRelaciones.join(", ") + "}<br><br>Relación de orden parcial = {" + relacionOrdenParcial.join(", ") + "}<br><br>Relación de equivalencia = {" + relacionEquivalencia.join(", ") + "}";
-}
-
-function calcularDiferenciaSimetrica() {
-    // Obtener los conjuntos del input
-    var conjuntoA = document.getElementById("conjuntoA").value.split(",").map(function(item) {
-        return item.trim();
-    }).filter(function(item) {
-        return item !== "";
-    });
-
-    var conjuntoB = document.getElementById("conjuntoB").value.split(",").map(function(item) {
-        return item.trim();
-    }).filter(function(item) {
-        return item !== "";
-    });
-
-    // Calcular la diferencia simétrica
-    var diferenciaAB = conjuntoA.filter(function(elemento) {
-        return !conjuntoB.includes(elemento);
-    });
-
-    var diferenciaBA = conjuntoB.filter(function(elemento) {
-        return !conjuntoA.includes(elemento);
-    });
-
-    var diferenciaSimetrica = diferenciaAB.concat(diferenciaBA);
-
-    // Definición de la diferencia simétrica
-    var definicion = "<p>Definición:</p>\n";
-    definicion += "<p>Diferencia simétrica: La diferencia simétrica entre dos conjuntos A y B, denotada como A △ B, es el conjunto que contiene todos los elementos que están en A pero no en B, junto con todos los elementos que están en B pero no en A.</p>";
-
-    // Mostrar el resultado
-    var resultadoDiv = document.getElementById("resultado");
-    resultadoDiv.innerHTML = definicion + "Diferencia simétrica: {" + diferenciaSimetrica.join(", ") + "}";
 }
 
 // tepox :P
@@ -929,6 +857,7 @@ function mostrarMatrizRelacion() {
 
     resultado.appendChild(tabla);
 }
+
 function irAGrafos() {
-    window.location.href = "Grafos.html";
+    window.location.href = "Grafos.html"
 }
