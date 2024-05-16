@@ -929,3 +929,6 @@ function mostrarMatrizRelacion() {
 
     resultado.appendChild(tabla);
 }
+function irAGrafos() {
+    window.location.href = "Grafos.html";
+}
