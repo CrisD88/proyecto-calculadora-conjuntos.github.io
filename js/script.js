@@ -477,6 +477,44 @@ function calcularProductoCruz() {
     resultadoDiv.innerHTML = definicion + "A × B = " + resultadoProductoCruzAB + "<br><br>B × A = " + resultadoProductoCruzBA;
 }
 
+/*
+-------------------------------------------------------- Diferencia simetrica
+*/
+
+function calcularDiferenciaSimetrica() {
+    // Obtener los conjuntos del input
+    var conjuntoA = document.getElementById("conjuntoA").value.split(",").map(function(item) {
+        return item.trim();
+    }).filter(function(item) {
+        return item !== "";
+    });
+
+    var conjuntoB = document.getElementById("conjuntoB").value.split(",").map(function(item) {
+        return item.trim();
+    }).filter(function(item) {
+        return item !== "";
+    });
+
+    // Calcular la diferencia simétrica
+    var diferenciaAB = conjuntoA.filter(function(elemento) {
+        return !conjuntoB.includes(elemento);
+    });
+
+    var diferenciaBA = conjuntoB.filter(function(elemento) {
+        return !conjuntoA.includes(elemento);
+    });
+
+    var diferenciaSimetrica = diferenciaAB.concat(diferenciaBA);
+
+    // Definición de la diferencia simétrica
+    var definicion = "<p>Definición:</p>\n";
+    definicion += "<p>Diferencia simétrica: La diferencia simétrica entre dos conjuntos A y B, denotada como A △ B, es el conjunto que contiene todos los elementos que están en A pero no en B, junto con todos los elementos que están en B pero no en A.</p>";
+
+    // Mostrar el resultado
+    var resultadoDiv = document.getElementById("resultado");
+    resultadoDiv.innerHTML = definicion + "Diferencia simétrica: {" + diferenciaSimetrica.join(", ") + "}";
+}
+
 // tepox :P
 
 /*
