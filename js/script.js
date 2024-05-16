@@ -435,17 +435,20 @@ function calcularComplementos() {
     resultadoDiv.innerHTML = definicion + "A' = " + resultadoComplementoA + "<br><br> B' = " + resultadoComplementoB + "<br><br> C' = " + resultadoComplementoC;
 }
 
-
 function calcularProductoCruz() {
-    // Obtener los conjuntos A y B del input
+    // Obtener los conjuntos A, B y C del input
     var conjuntoA = document.getElementById("conjuntoA").value;
     var conjuntoB = document.getElementById("conjuntoB").value;
+    var conjuntoC = document.getElementById("conjuntoC").value;
 
     // Convertir los conjuntos en arrays
     var elementosA = conjuntoA.split(",").map(function(item) {
         return item.trim();
     });
     var elementosB = conjuntoB.split(",").map(function(item) {
+        return item.trim();
+    });
+    var elementosC = conjuntoC.split(",").map(function(item) {
         return item.trim();
     });
 
@@ -465,16 +468,52 @@ function calcularProductoCruz() {
         }
     }
 
+    // Calcular el producto cruz de A y C
+    var productoCruzAC = [];
+    for (var i = 0; i < elementosA.length; i++) {
+        for (var j = 0; j < elementosC.length; j++) {
+            productoCruzAC.push("(" + elementosA[i] + ", " + elementosC[j] + ")");
+        }
+    }
+
+    // Calcular el producto cruz de C y A
+    var productoCruzCA = [];
+    for (var i = 0; i < elementosC.length; i++) {
+        for (var j = 0; j < elementosA.length; j++) {
+            productoCruzCA.push("(" + elementosC[i] + ", " + elementosA[j] + ")");
+        }
+    }
+
+    // Calcular el producto cruz de B y C
+    var productoCruzBC = [];
+    for (var i = 0; i < elementosB.length; i++) {
+        for (var j = 0; j < elementosC.length; j++) {
+            productoCruzBC.push("(" + elementosB[i] + ", " + elementosC[j] + ")");
+        }
+    }
+
+    // Calcular el producto cruz de C y B
+    var productoCruzCB = [];
+    for (var i = 0; i < elementosC.length; i++) {
+        for (var j = 0; j < elementosB.length; j++) {
+            productoCruzCB.push("(" + elementosC[i] + ", " + elementosB[j] + ")");
+        }
+    }
+
     // Convertir los resultados a cadenas separadas por comas
     var resultadoProductoCruzAB = "{" + productoCruzAB.join(", ") + "}";
     var resultadoProductoCruzBA = "{" + productoCruzBA.join(", ") + "}";
+    var resultadoProductoCruzAC = "{" + productoCruzAC.join(", ") + "}";
+    var resultadoProductoCruzCA = "{" + productoCruzCA.join(", ") + "}";
+    var resultadoProductoCruzBC = "{" + productoCruzBC.join(", ") + "}";
+    var resultadoProductoCruzCB = "{" + productoCruzCB.join(", ") + "}";
 
     // Definición del producto cruz
     var definicion = "<p>Definición:</p>\n<p>Producto Cruz: Dos conjuntos A y B, denotado como A × B, es el conjunto de todos los pares ordenados (a, b) donde a pertenece a A y b pertenece a B.</p>";
 
     // Mostrar los resultados
     var resultadoDiv = document.getElementById("resultado");
-    resultadoDiv.innerHTML = definicion + "A × B = " + resultadoProductoCruzAB + "<br><br>B × A = " + resultadoProductoCruzBA;
+    resultadoDiv.innerHTML = definicion + "A × B = " + resultadoProductoCruzAB + "<br><br>B × A = " + resultadoProductoCruzBA + "<br><br>A × C = " + resultadoProductoCruzAC + "<br><br>C × A = " + resultadoProductoCruzCA + "<br><br>B × C = " + resultadoProductoCruzBC + "<br><br>C × B = " + resultadoProductoCruzCB;
 }
 
 /*
