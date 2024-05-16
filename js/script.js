@@ -44,8 +44,6 @@ function calcularCardinalidades() {
     resultadoDiv.innerHTML = definicion + "<br>Cardinalidad del Universo = " + cardinalidadUniverso + "<br>Cardinalidad de A = " + cardinalidadA + "<br>Cardinalidad de B = " + cardinalidadB + "<br>Cardinalidad de C = " + cardinalidadC;
 }
 
-
-
 function limpiarResultado() {
     var resultadoDiv = document.getElementById("resultado");
     resultadoDiv.textContent = "";
