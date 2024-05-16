@@ -163,6 +163,7 @@ function calcularUnion() {
 function calcularInterseccion() {
     var conjuntoA = document.getElementById("conjuntoA").value;
     var conjuntoB = document.getElementById("conjuntoB").value;
+    var conjuntoC = document.getElementById("conjuntoC").value;
 
     // Convertir los conjuntos en arrays
     var elementosA = conjuntoA.split(",").map(function(item) {
@@ -171,10 +172,21 @@ function calcularInterseccion() {
     var elementosB = conjuntoB.split(",").map(function(item) {
         return item.trim();
     });
+    var elementosC = conjuntoC.split(",").map(function(item) {
+        return item.trim();
+    });
 
     // Calcular la intersección
-    var interseccion = elementosA.filter(function(item) {
+    var interseccionAB = elementosA.filter(function(item) {
         return elementosB.includes(item);
+    });
+    
+    var interseccionAC = elementosA.filter(function(item) {
+        return elementosC.includes(item);
+    });
+    
+    var interseccionBC = elementosB.filter(function(item) {
+        return elementosC.includes(item);
     });
 
      // Definición de la intersección
@@ -182,7 +194,7 @@ function calcularInterseccion() {
 
     // Mostrar el resultado
     var resultadoDiv = document.getElementById("resultado");
-    resultadoDiv.innerHTML = definicion + "A ∩ B = {" + interseccion.join(", ") + "}";
+    resultadoDiv.innerHTML = definicion + "A ∩ B = {" + interseccionAB.join(", ") + "}" + "<br>" + "A ∩ C = {" + interseccionAC.join(", ") + "}" + "<br>" + "B ∩ C = {" + interseccionBC.join(", ") + "}";
 }
 
  //Función que opera los conjuntos que el usuario dió
