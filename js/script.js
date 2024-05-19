@@ -449,44 +449,81 @@ function calcularResta() {
     // Obtener los conjuntos de los inputs
     var conjuntoA = document.getElementById("conjuntoA").value;
     var conjuntoB = document.getElementById("conjuntoB").value;
+    var conjuntoC = document.getElementById("conjuntoC").value;
 
-    // Convertir los conjuntos en arrays
-    var elementosA = conjuntoA.split(",").map(function(item) {
-        return item.trim();
-    });
-    var elementosB = conjuntoB.split(",").map(function(item) {
-        return item.trim();
-    });
-
-    // Verificar si el conjunto A es vacío
-    if (elementosA.length === 0) {
-        var resultadoDiv = document.getElementById("resultado");
-        resultadoDiv.textContent = "El conjunto A es vacío.";
-        return;
+    // Función para determinar si un conjunto contiene subconjuntos
+    function tieneSubconjuntos(conjunto) {
+        return conjunto.includes("{") && conjunto.includes("}");
     }
 
-    // Filtrar los elementos del conjunto A que no están en B
-    var restaAB = elementosA.filter(function(elemento) {
-        return !elementosB.includes(elemento);
-    });
+    // Función para convertir una cadena de subconjuntos a un array de strings
+    function convertirACaracterArray(conjunto) {
+        conjunto = conjunto.replace(/\s/g, "");
+        if (conjunto === "") return [];
+        let subconjuntos = conjunto.split("},{").map(subconjunto => {
+            return "{" + subconjunto.replace(/{|}/g, "") + "}";
+        });
+        return subconjuntos;
+    }
 
-    // Filtrar los elementos del conjunto B que no están en A
-    var restaBA = elementosB.filter(function(elemento) {
-        return !elementosA.includes(elemento);
-    });
+    // Función para convertir una cadena de elementos individuales a un array de strings
+    function convertirAElementoArray(conjunto) {
+        return conjunto.replace(/\s/g, "").split(",").filter(item => item !== "");
+    }
 
-    // Convertir el resultado de A - B a una cadena separada por comas
-    var resultadoRestaAB = restaAB.join(", ");
+    // Convertir los conjuntos adecuadamente
+    var elementosA, elementosB, elementosC;
+    var tieneSubconjuntosA = tieneSubconjuntos(conjuntoA);
+    var tieneSubconjuntosB = tieneSubconjuntos(conjuntoB);
+    var tieneSubconjuntosC = tieneSubconjuntos(conjuntoC);
 
-    // Convertir el resultado de B - A a una cadena separada por comas
-    var resultadoRestaBA = restaBA.join(", ");
+    if (tieneSubconjuntosA) {
+        elementosA = convertirACaracterArray(conjuntoA);
+    } else {
+        elementosA = convertirAElementoArray(conjuntoA);
+    }
+
+    if (tieneSubconjuntosB) {
+        elementosB = convertirACaracterArray(conjuntoB);
+    } else {
+        elementosB = convertirAElementoArray(conjuntoB);
+    }
+
+    if (tieneSubconjuntosC) {
+        elementosC = convertirACaracterArray(conjuntoC);
+    } else {
+        elementosC = convertirAElementoArray(conjuntoC);
+    }
+
+    // Función para calcular la resta entre dos conjuntos
+    function calcularRestaConjuntos(conjunto1, conjunto2) {
+        return conjunto1.filter(function(elemento) {
+            return !conjunto2.includes(elemento);
+        });
+    }
+
+    // Calcular las restas
+    var restaAB = calcularRestaConjuntos(elementosA, elementosB);
+    var restaBA = calcularRestaConjuntos(elementosB, elementosA);
+    var restaAC = calcularRestaConjuntos(elementosA, elementosC);
+    var restaCA = calcularRestaConjuntos(elementosC, elementosA);
+    var restaBC = calcularRestaConjuntos(elementosB, elementosC);
+    var restaCB = calcularRestaConjuntos(elementosC, elementosB);
+
+    // Convertir los resultados a cadenas
+    var resultadoRestaAB = tieneSubconjuntosA || tieneSubconjuntosB ? "{" + restaAB.join(", ") + "}" : "{" + restaAB.join(", ") + "}";
+    var resultadoRestaBA = tieneSubconjuntosA || tieneSubconjuntosB ? "{" + restaBA.join(", ") + "}" : "{" + restaBA.join(", ") + "}";
+    var resultadoRestaAC = tieneSubconjuntosA || tieneSubconjuntosC ? "{" + restaAC.join(", ") + "}" : "{" + restaAC.join(", ") + "}";
+    var resultadoRestaCA = tieneSubconjuntosA || tieneSubconjuntosC ? "{" + restaCA.join(", ") + "}" : "{" + restaCA.join(", ") + "}";
+    var resultadoRestaBC = tieneSubconjuntosB || tieneSubconjuntosC ? "{" + restaBC.join(", ") + "}" : "{" + restaBC.join(", ") + "}";
+    var resultadoRestaCB = tieneSubconjuntosB || tieneSubconjuntosC ? "{" + restaCB.join(", ") + "}" : "{" + restaCB.join(", ") + "}";
 
     // Definición de la resta
     var definicion = "<p>Definición:</p>\n<p>Resta de conjuntos: La resta A - B contiene todos los elementos que están presentes en A pero no en B.</p>";
 
-    // Mostrar el resultado de A - B
+    // Mostrar los resultados
     var resultadoDiv = document.getElementById("resultado");
-    resultadoDiv.innerHTML = definicion + "A - B = {" + resultadoRestaAB + "}<br><br>B - A = {" + resultadoRestaBA + "}";
+    resultadoDiv.innerHTML = definicion + "A - B = " + resultadoRestaAB + "<br><br>B - A = " + resultadoRestaBA + "<br><br>A - C = " + resultadoRestaAC + "<br><br>C - A = " + resultadoRestaCA + "<br><br>B - C = " + resultadoRestaBC + "<br><br>C - B = " + resultadoRestaCB;
 }
 
 function calcularConjuntoPotencia() {
