@@ -49,78 +49,74 @@ function limpiarResultado() {
     resultadoDiv.textContent = "";
 }
 
-function verificarSubconjuntos() {
-    var conjuntoA = document.getElementById("conjuntoA").value;
-    var conjuntoB = document.getElementById("conjuntoB").value;
-    var universo = document.getElementById("universo").value;
+function Subconjuntos() {
+    // Obtener los valores de los conjuntos U, A, B y C
+    let conjuntoU = document.getElementById('universo').value.split(',').map(item => item.trim()).filter(item => item !== "");
+    let conjuntoA = document.getElementById('conjuntoA').value.split(',').map(item => item.trim()).filter(item => item !== "");
+    let conjuntoB = document.getElementById('conjuntoB').value.split(',').map(item => item.trim()).filter(item => item !== "");
+    let conjuntoC = document.getElementById('conjuntoC').value.split(',').map(item => item.trim()).filter(item => item !== "");
 
-    // Convertir los conjuntos en arrays
-    var elementosA = conjuntoA.split(",").map(function(item) {
-        return item.trim();
-    });
-    var elementosB = conjuntoB.split(",").map(function(item) {
-        return item.trim();
-    });
-    var elementosUniverso = universo.split(",").map(function(item) {
-        return item.trim();
-    });
+    // Convertir los elementos a números si es posible
+    conjuntoU = conjuntoU.map(item => isNaN(item) ? item : Number(item));
+    conjuntoA = conjuntoA.map(item => isNaN(item) ? item : Number(item));
+    conjuntoB = conjuntoB.map(item => isNaN(item) ? item : Number(item));
+    conjuntoC = conjuntoC.map(item => isNaN(item) ? item : Number(item));
 
-    // Función para verificar si un conjunto es subconjunto de otro
-    function esSubconjunto(conjunto, subconjunto) {
-        return subconjunto.every(function(item) {
-            return conjunto.includes(item);
-        });
+    // Función para comprobar si un conjunto es subconjunto de otro
+    function esSubconjunto(subconjunto, conjunto) {
+        return subconjunto.every(elemento => conjunto.includes(elemento));
     }
 
-    // Función para verificar si un conjunto es subconjunto propio de otro
-    function esSubconjuntoPropio(conjunto, subconjunto) {
-        return esSubconjunto(conjunto, subconjunto) && conjunto.length < subconjunto.length;
+    // Verificar subconjuntos entre A, B y C, y con U
+    let A_esSubconjuntoDeB = esSubconjunto(conjuntoA, conjuntoB);
+    let B_esSubconjuntoDeA = esSubconjunto(conjuntoB, conjuntoA);
+    let A_esSubconjuntoDeC = esSubconjunto(conjuntoA, conjuntoC);
+    let C_esSubconjuntoDeA = esSubconjunto(conjuntoC, conjuntoA);
+    let B_esSubconjuntoDeC = esSubconjunto(conjuntoB, conjuntoC);
+    let C_esSubconjuntoDeB = esSubconjunto(conjuntoC, conjuntoB);
+
+    let A_esSubconjuntoDeU = esSubconjunto(conjuntoA, conjuntoU);
+    let B_esSubconjuntoDeU = esSubconjunto(conjuntoB, conjuntoU);
+    let C_esSubconjuntoDeU = esSubconjunto(conjuntoC, conjuntoU);
+
+    // Definición de subconjuntos
+    let resultado = "Definición: Un conjunto A es un subconjunto de un conjunto B (A ⊆ B) si todos los elementos de A también son elementos de B.<br><br>";
+
+    // Agregar resultados si corresponden
+    if (A_esSubconjuntoDeB) {
+        resultado += "A ⊆ B<br>";
+    }
+    if (B_esSubconjuntoDeA) {
+        resultado += "B ⊆ A<br>";
+    }
+    if (A_esSubconjuntoDeC) {
+        resultado += "A ⊆ C<br>";
+    }
+    if (C_esSubconjuntoDeA) {
+        resultado += "C ⊆ A<br>";
+    }
+    if (B_esSubconjuntoDeC) {
+        resultado += "B ⊆ C<br>";
+    }
+    if (C_esSubconjuntoDeB) {
+        resultado += "C ⊆ B<br>";
+    }
+    if (A_esSubconjuntoDeU) {
+        resultado += "A ⊆ U<br>";
+    }
+    if (B_esSubconjuntoDeU) {
+        resultado += "B ⊆ U<br>";
+    }
+    if (C_esSubconjuntoDeU) {
+        resultado += "C ⊆ U<br>";
     }
 
-    // Verificar subconjuntos
-    var resultado = "";
-
-    // Definiciones
-    resultado += "<p>Definiciones:</p>";
-    resultado += "<p>Subconjunto ⊆: Cada elemento de A está en B.</p>";
-    resultado += "<p>Subconjunto propio ⊂: Cada elemento de A está en B, pero B tiene más elementos.</p>";
-    resultado += "<p>No es un subconjunto ⊄: A no es un subconjunto de B.</p>";
-
-    if (esSubconjunto(elementosA, elementosB)) {
-        resultado += "A ⊆ B. <br>";
-    } else if (esSubconjuntoPropio(elementosA, elementosB)) {
-        resultado += "A ⊂ B. <br>";
+    // Mostrar el resultado
+    if (A_esSubconjuntoDeB || B_esSubconjuntoDeA || A_esSubconjuntoDeC || C_esSubconjuntoDeA || B_esSubconjuntoDeC || C_esSubconjuntoDeB || A_esSubconjuntoDeU || B_esSubconjuntoDeU || C_esSubconjuntoDeU) {
+        document.getElementById('resultado').innerHTML = resultado;
     } else {
-        resultado += "A ⊄ B. <br>";
+        document.getElementById('resultado').innerHTML = "Definición: Un conjunto A es un subconjunto de un conjunto B (A ⊆ B) si todos los elementos de A también son elementos de B.<br><br>Ninguno de los conjuntos es subconjunto de los otros.";
     }
-
-    if (esSubconjunto(elementosB, elementosA)) {
-        resultado += "B ⊆ A. <br>";
-    } else if (esSubconjuntoPropio(elementosB, elementosA)) {
-        resultado += "B ⊂ A. <br>";
-    } else {
-        resultado += "B ⊄ A. <br>";
-    }
-
-    if (esSubconjunto(elementosA, elementosUniverso)) {
-        resultado += "A ⊆ U. <br>";
-    } else if (esSubconjuntoPropio(elementosA, elementosUniverso)) {
-        resultado += "A ⊂ U. <br>";
-    } else {
-        resultado += "A ⊄ U. <br>";
-    }
-
-    if (esSubconjunto(elementosB, elementosUniverso)) {
-        resultado += "B ⊆ U. <br>";
-    } else if (esSubconjuntoPropio(elementosB, elementosUniverso)) {
-        resultado += "B ⊂ U. <br>";
-    } else {
-        resultado += "B ⊄ U. <br>";
-    }
-
-    // Imprimir resultado
-    var resultadoDiv = document.getElementById("resultado");
-    resultadoDiv.innerHTML = resultado;
 }
 
 function calcularUnion() {
