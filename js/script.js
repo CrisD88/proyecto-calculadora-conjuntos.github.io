@@ -532,12 +532,43 @@ function calcularConjuntoPotencia() {
     var conjuntoB = document.getElementById("conjuntoB").value;
     var conjuntoC = document.getElementById("conjuntoC").value;
 
+    // Función para dividir el conjunto en elementos individuales y subconjuntos
+    function dividirElementos(conjunto) {
+        var elementos = [];
+        var temp = "";
+        var dentroSubconjunto = false;
+
+        for (var i = 0; i < conjunto.length; i++) {
+            var char = conjunto[i];
+
+            if (char === '{') {
+                dentroSubconjunto = true;
+                temp += char;
+            } else if (char === '}') {
+                temp += char;
+                dentroSubconjunto = false;
+                elementos.push(temp.trim());
+                temp = "";
+            } else if (char === ',' && !dentroSubconjunto) {
+                if (temp.trim() !== "") {
+                    elementos.push(temp.trim());
+                }
+                temp = "";
+            } else {
+                temp += char;
+            }
+        }
+
+        if (temp.trim() !== "") {
+            elementos.push(temp.trim());
+        }
+
+        return elementos;
+    }
+
     // Función para obtener el conjunto potencia de un conjunto
     function obtenerConjuntoPotencia(conjunto) {
-        // Convertir el conjunto en un array
-        var elementos = conjunto.split(",").map(function(item) {
-            return item.trim();
-        });
+        var elementos = dividirElementos(conjunto);
 
         // Obtener todas las combinaciones posibles de subconjuntos
         function obtenerCombinaciones(elementos) {
