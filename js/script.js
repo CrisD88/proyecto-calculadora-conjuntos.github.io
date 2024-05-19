@@ -231,36 +231,92 @@ function calcularInterseccion() {
     var conjuntoB = document.getElementById("conjuntoB").value;
     var conjuntoC = document.getElementById("conjuntoC").value;
 
-    // Convertir los conjuntos en arrays
-    var elementosA = conjuntoA.split(",").map(function(item) {
-        return item.trim();
-    });
-    var elementosB = conjuntoB.split(",").map(function(item) {
-        return item.trim();
-    });
-    var elementosC = conjuntoC.split(",").map(function(item) {
-        return item.trim();
-    });
+    // Función para determinar si un conjunto contiene subconjuntos
+    function tieneSubconjuntos(conjunto) {
+        return conjunto.includes("{") && conjunto.includes("}");
+    }
 
-    // Calcular la intersección
-    var interseccionAB = elementosA.filter(function(item) {
-        return elementosB.includes(item);
-    });
-    
-    var interseccionAC = elementosA.filter(function(item) {
-        return elementosC.includes(item);
-    });
-    
-    var interseccionBC = elementosB.filter(function(item) {
-        return elementosC.includes(item);
-    });
+    // Función para convertir una cadena de subconjuntos a un array de strings
+    function convertirACaracterArray(conjunto) {
+        conjunto = conjunto.replace(/\s/g, "");
+        if (conjunto === "") return [];
+        let subconjuntos = conjunto.split("},{").map(subconjunto => {
+            return "{" + subconjunto.replace(/{|}/g, "") + "}";
+        });
+        return subconjuntos;
+    }
 
-     // Definición de la intersección
-     var definicion = "<p>Definición:</p>\n<p>Intersección: A ∩ B contiene los elementos que están presentes en ambos conjuntos A y B.</p>";
+    // Función para convertir una cadena de elementos individuales a un array de strings
+    function convertirAElementoArray(conjunto) {
+        return conjunto.replace(/\s/g, "").split(",").filter(item => item !== "");
+    }
 
-    // Mostrar el resultado
+    // Función para calcular la intersección de subconjuntos
+    function interseccionSubconjuntos(conjunto1, conjunto2) {
+        return conjunto1.filter(subconjunto => conjunto2.includes(subconjunto));
+    }
+
+    // Función para calcular la intersección de elementos individuales
+    function interseccionElementos(conjunto1, conjunto2) {
+        return conjunto1.filter(item => conjunto2.includes(item));
+    }
+
+    // Verificar y convertir los conjuntos A, B y C
+    var elementosA, elementosB, elementosC;
+    var tieneSubconjuntosA = tieneSubconjuntos(conjuntoA);
+    var tieneSubconjuntosB = tieneSubconjuntos(conjuntoB);
+    var tieneSubconjuntosC = tieneSubconjuntos(conjuntoC);
+
+    if (tieneSubconjuntosA) {
+        elementosA = convertirACaracterArray(conjuntoA);
+    } else {
+        elementosA = convertirAElementoArray(conjuntoA);
+    }
+
+    if (tieneSubconjuntosB) {
+        elementosB = convertirACaracterArray(conjuntoB);
+    } else {
+        elementosB = convertirAElementoArray(conjuntoB);
+    }
+
+    if (tieneSubconjuntosC) {
+        elementosC = convertirACaracterArray(conjuntoC);
+    } else {
+        elementosC = convertirAElementoArray(conjuntoC);
+    }
+
+    // Calcular la intersección adecuadamente
+    var interseccionAB, interseccionAC, interseccionBC;
+
+    if (tieneSubconjuntosA || tieneSubconjuntosB) {
+        interseccionAB = interseccionSubconjuntos(elementosA, elementosB);
+    } else {
+        interseccionAB = interseccionElementos(elementosA, elementosB);
+    }
+
+    if (tieneSubconjuntosA || tieneSubconjuntosC) {
+        interseccionAC = interseccionSubconjuntos(elementosA, elementosC);
+    } else {
+        interseccionAC = interseccionElementos(elementosA, elementosC);
+    }
+
+    if (tieneSubconjuntosB || tieneSubconjuntosC) {
+        interseccionBC = interseccionSubconjuntos(elementosB, elementosC);
+    } else {
+        interseccionBC = interseccionElementos(elementosB, elementosC);
+    }
+
+    // Convertir los resultados a cadenas
+    var resultadoInterseccionAB = tieneSubconjuntosA || tieneSubconjuntosB ? "{" + interseccionAB.join(", ") + "}" : "{" + interseccionAB.join(", ") + "}";
+    var resultadoInterseccionAC = tieneSubconjuntosA || tieneSubconjuntosC ? "{" + interseccionAC.join(", ") + "}" : "{" + interseccionAC.join(", ") + "}";
+    var resultadoInterseccionBC = tieneSubconjuntosB || tieneSubconjuntosC ? "{" + interseccionBC.join(", ") + "}" : "{" + interseccionBC.join(", ") + "}";
+
+    // Definición de la intersección
+    var definicion = "<p>Definición:</p>\n<p>Intersección: A ∩ B contiene los elementos que están presentes en ambos conjuntos A y B.</p>";
+
+    // Mostrar los resultados
     var resultadoDiv = document.getElementById("resultado");
-    resultadoDiv.innerHTML = definicion + "A ∩ B = {" + interseccionAB.join(", ") + "}" + "<br>" + "A ∩ C = {" + interseccionAC.join(", ") + "}" + "<br>" + "B ∩ C = {" + interseccionBC.join(", ") + "}";
+    resultadoDiv.innerHTML = definicion + "A ∩ B = " + resultadoInterseccionAB + "<br><br>A ∩ C = " + resultadoInterseccionAC + "<br><br>B ∩ C = " + resultadoInterseccionBC;
 }
 
  //Función que opera los conjuntos que el usuario dió
