@@ -419,6 +419,32 @@ function operacionesConModulo() {
     let res = opMod(datoA, datoB, modulo);
 }
 
+function calcularModulo() {
+    // Obtener los valores ingresados por el usuario
+    let valorA = parseInt(document.getElementById("conjuntoA").value);
+    let valorB = parseInt(document.getElementById("conjuntoB").value);
+    let valorM = parseInt(document.getElementById("modulo").value);
+
+    // Calcular los módulos
+    let moduloA = valorA % valorM;
+    let moduloB = valorB % valorM;
+
+    // Comparar los módulos
+    let equivalentes = moduloA === moduloB;
+    let mensajeEquivalencia = equivalentes ? "Son equivalentes" : "No son equivalentes";
+
+    // Formatear los resultados
+    let resultadosStr = `
+        <p>Valor A: ${valorA}, Valor M: ${valorM}, A % M = ${moduloA}</p>
+        <p>Valor B: ${valorB}, Valor M: ${valorM}, B % M = ${moduloB}</p>
+        <p> ${valorA} = ${valorB} MOD ${valorM} </p>
+        <p>${mensajeEquivalencia}</p>
+    `;
+
+    // Mostrar los resultados
+    document.getElementById("resultado").innerHTML = resultadosStr;
+}
+
 function calcularResta() {
     // Obtener los conjuntos de los inputs
     var conjuntoA = document.getElementById("conjuntoA").value;
