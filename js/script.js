@@ -125,28 +125,98 @@ function calcularUnion() {
     var conjuntoB = document.getElementById("conjuntoB").value;
     var conjuntoC = document.getElementById("conjuntoC").value;
 
-    // Convertir los conjuntos en arrays
-    var elementosA = conjuntoA.split(",").map(function(item) {
-        return item.trim();
-    });
-    var elementosB = conjuntoB.split(",").map(function(item) {
-        return item.trim();
-    });
-    var elementosC = conjuntoC.split(",").map(function(item) {
-        return item.trim();
-    });
+    // Función para determinar si un conjunto contiene subconjuntos
+    function tieneSubconjuntos(conjunto) {
+        return conjunto.includes("{") && conjunto.includes("}");
+    }
 
-    // Unir los elementos de los conjuntos sin duplicados
-    var unionAB = Array.from(new Set([...elementosA, ...elementosB])).sort();
-    var unionAC = Array.from(new Set([...elementosA, ...elementosC])).sort();
-    var unionBC = Array.from(new Set([...elementosB, ...elementosC])).sort();
-    var unionABC = Array.from(new Set([...elementosA, ...elementosB, ...elementosC])).sort();
+    // Función para convertir una cadena de subconjuntos a un array de strings
+    function convertirACaracterArray(conjunto) {
+        conjunto = conjunto.replace(/\s/g, "");
+        if (conjunto === "") return [];
+        let subconjuntos = conjunto.split("},{").map(subconjunto => {
+            return "{" + subconjunto.replace(/{|}/g, "") + "}";
+        });
+        return subconjuntos;
+    }
 
-    // Convertir los resultados a cadenas separadas por comas
-    var resultadoUnionAB = "{" + unionAB.join(", ") + "}";
-    var resultadoUnionAC = "{" + unionAC.join(", ") + "}";
-    var resultadoUnionBC = "{" + unionBC.join(", ") + "}";
-    var resultadoUnionABC = "{" + unionABC.join(", ") + "}";
+    // Función para convertir una cadena de elementos individuales a un array de strings
+    function convertirAElementoArray(conjunto) {
+        return conjunto.replace(/\s/g, "").split(",").filter(item => item !== "");
+    }
+
+    // Función para unir subconjuntos sin duplicados
+    function unirSinDuplicados(conjunto1, conjunto2) {
+        let union = conjunto1.slice();
+        conjunto2.forEach(subconjunto => {
+            if (!union.includes(subconjunto)) {
+                union.push(subconjunto);
+            }
+        });
+        return union;
+    }
+
+    // Función para unir elementos individuales sin duplicados
+    function unirElementosSinDuplicados(conjunto1, conjunto2) {
+        return Array.from(new Set([...conjunto1, ...conjunto2])).sort();
+    }
+
+    // Verificar y convertir los conjuntos A, B y C
+    var elementosA, elementosB, elementosC;
+    var tieneSubconjuntosA = tieneSubconjuntos(conjuntoA);
+    var tieneSubconjuntosB = tieneSubconjuntos(conjuntoB);
+    var tieneSubconjuntosC = tieneSubconjuntos(conjuntoC);
+
+    if (tieneSubconjuntosA) {
+        elementosA = convertirACaracterArray(conjuntoA);
+    } else {
+        elementosA = convertirAElementoArray(conjuntoA);
+    }
+
+    if (tieneSubconjuntosB) {
+        elementosB = convertirACaracterArray(conjuntoB);
+    } else {
+        elementosB = convertirAElementoArray(conjuntoB);
+    }
+
+    if (tieneSubconjuntosC) {
+        elementosC = convertirACaracterArray(conjuntoC);
+    } else {
+        elementosC = convertirAElementoArray(conjuntoC);
+    }
+
+    // Unir los elementos de los conjuntos adecuadamente
+    var unionAB, unionAC, unionBC, unionABC;
+
+    if (tieneSubconjuntosA || tieneSubconjuntosB) {
+        unionAB = unirSinDuplicados(elementosA, elementosB);
+    } else {
+        unionAB = unirElementosSinDuplicados(elementosA, elementosB);
+    }
+
+    if (tieneSubconjuntosA || tieneSubconjuntosC) {
+        unionAC = unirSinDuplicados(elementosA, elementosC);
+    } else {
+        unionAC = unirElementosSinDuplicados(elementosA, elementosC);
+    }
+
+    if (tieneSubconjuntosB || tieneSubconjuntosC) {
+        unionBC = unirSinDuplicados(elementosB, elementosC);
+    } else {
+        unionBC = unirElementosSinDuplicados(elementosB, elementosC);
+    }
+
+    if (tieneSubconjuntosA || tieneSubconjuntosB || tieneSubconjuntosC) {
+        unionABC = unirSinDuplicados(unionAB, elementosC);
+    } else {
+        unionABC = unirElementosSinDuplicados(unionAB, elementosC);
+    }
+
+    // Convertir los resultados a cadenas
+    var resultadoUnionAB = tieneSubconjuntosA || tieneSubconjuntosB ? "{" + unionAB.join(", ") + "}" : "{" + unionAB.join(", ") + "}";
+    var resultadoUnionAC = tieneSubconjuntosA || tieneSubconjuntosC ? "{" + unionAC.join(", ") + "}" : "{" + unionAC.join(", ") + "}";
+    var resultadoUnionBC = tieneSubconjuntosB || tieneSubconjuntosC ? "{" + unionBC.join(", ") + "}" : "{" + unionBC.join(", ") + "}";
+    var resultadoUnionABC = tieneSubconjuntosA || tieneSubconjuntosB || tieneSubconjuntosC ? "{" + unionABC.join(", ") + "}" : "{" + unionABC.join(", ") + "}";
 
     // Definición de las uniones
     var definicion = "<p>Definición:</p>\n<p>Unión: A ∪ B contiene todos los elementos que están presentes en al menos uno de los conjuntos A y B.</p>";
