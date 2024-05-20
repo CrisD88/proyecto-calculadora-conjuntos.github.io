@@ -1199,68 +1199,180 @@ function mostrarMatrizRelacion() {
         return item.trim();
     });
 
-    conjuntoA.sort();
+    var conjuntoB = document.getElementById('conjuntoB').value.split(',').map(function(item) {
+        return item.trim();
+    });
 
-    var relacionInput = document.getElementById('relacionA');
-    var relacion = relacionInput.value.match(/\((\w+),(\w+)\)/g); // Modificado para aceptar letras
+    var conjuntoC = document.getElementById('conjuntoC').value.split(',').map(function(item) {
+        return item.trim();
+    });
 
-    // Obtener los pares ordenados de la relación para mostrar en el título
-    var paresOrdenados = relacion ? relacion.join(', ') : '';
+    var relacionInputR1 = document.getElementById('relacionA');
+    var relacionInputR2 = document.getElementById('relacionB');
 
-    // Crear el texto del título que incluye los pares ordenados de la relación
-    var tituloTexto = "Matriz de Relación: " + paresOrdenados;
+    var relacionR1 = relacionInputR1.value.match(/\((\w+),(\w+)\)/g); // Modificado para aceptar letras
+    var relacionR2 = relacionInputR2.value.match(/\((\w+),(\w+)\)/g); // Modificado para aceptar letras
 
-    // Crear el elemento de título y establecer su contenido
-    var tituloElemento = document.createElement('p');
-    tituloElemento.textContent = tituloTexto;
+    // Título "Matriz de Relación"
+    var tituloGeneralTexto = "Matriz de Relación";
 
-    // Agregar el título al contenedor de resultado en la página
+    // Crear el elemento de título general y establecer su contenido
+    var tituloGeneralElemento = document.createElement('p');
+    tituloGeneralElemento.textContent = tituloGeneralTexto;
+
+    // Nota para el usuario
+    var notaTexto = "Nota: Para crear la relación R1, asegúrese de colocar los elementos en los conjuntos A y B. Para la relación R2, coloque los elementos en los conjuntos B y C.";
+
+    // Crear el elemento de la nota y establecer su contenido
+    var notaElemento = document.createElement('p');
+    notaElemento.textContent = notaTexto;
+
+    // Crear y agregar el título general y la nota al contenedor de resultado en la página
     var resultado = document.getElementById('resultado');
     resultado.innerHTML = ''; // Limpiar cualquier contenido previo
-    resultado.appendChild(tituloElemento);
+    resultado.appendChild(tituloGeneralElemento);
+    resultado.appendChild(notaElemento);
 
-    var matrizRelacion = [];
-    for (var i = 0; i < conjuntoA.length; i++) {
-        matrizRelacion[i] = [];
-        for (var j = 0; j < conjuntoA.length; j++) {
-            matrizRelacion[i][j] = 0;
+    // Matriz de relación R1
+    if (relacionR1) {
+        // Obtener los pares ordenados de la relación para mostrar en el título específico
+        var paresOrdenadosR1 = relacionR1.join(', ');
+
+        // Crear el texto del título específico que incluye los pares ordenados de la relación R1
+        var tituloEspecificoTextoR1 = "R1: " + paresOrdenadosR1;
+
+        // Crear el elemento de título específico para R1 y establecer su contenido
+        var tituloEspecificoElementoR1 = document.createElement('p');
+        tituloEspecificoElementoR1.textContent = tituloEspecificoTextoR1;
+
+        // Agregar el título específico de R1 al contenedor de resultado en la página
+        resultado.appendChild(tituloEspecificoElementoR1);
+
+        // Crear la matriz de relación R1 inicializada con ceros
+        var matrizRelacionR1 = [];
+        for (var i = 0; i < conjuntoA.length; i++) {
+            matrizRelacionR1[i] = [];
+            for (var j = 0; j < conjuntoB.length; j++) {
+                matrizRelacionR1[i][j] = 0;
+            }
         }
+
+        // Llenar la matriz de relación R1 según los pares ordenados
+        relacionR1.forEach(function(par) {
+            var elementos = par.match(/\w+/g); // Modificado para aceptar letras
+            var elementoA = elementos[0];
+            var elementoB = elementos[1];
+
+            var indiceA = conjuntoA.indexOf(elementoA);
+            var indiceB = conjuntoB.indexOf(elementoB);
+
+            if (indiceA !== -1 && indiceB !== -1) {
+                matrizRelacionR1[indiceA][indiceB] = 1;
+            }
+        });
+
+        // Crear y agregar la tabla de la matriz de relación R1
+        var tablaR1 = document.createElement('table');
+        var encabezadoR1 = tablaR1.createTHead().insertRow();
+        encabezadoR1.insertCell().appendChild(document.createTextNode(''));
+
+        conjuntoB.forEach(function(elemento) {
+            encabezadoR1.insertCell().appendChild(document.createTextNode(elemento));
+        });
+
+        conjuntoA.forEach(function(fila, indiceFila) {
+            var row = tablaR1.insertRow();
+            row.insertCell().appendChild(document.createTextNode(fila));
+            matrizRelacionR1[indiceFila].forEach(function(valor) {
+                var cell = row.insertCell();
+                cell.appendChild(document.createTextNode(valor));
+            });
+        });
+
+        resultado.appendChild(tablaR1);
+
+        // Generar y mostrar la relación inversa de R1
+        var relacionInversaR1 = relacionR1.map(function(par) {
+            var elementos = par.match(/\w+/g);
+            return "(" + elementos[1] + ", " + elementos[0] + ")";
+        });
+
+        var tituloRelacionInversaR1 = document.createElement('p');
+        tituloRelacionInversaR1.textContent = "Relación Inversa R1: {" + relacionInversaR1.join(', ') + "}";
+
+        resultado.appendChild(tituloRelacionInversaR1);
     }
 
-    relacion.forEach(function(par) {
-        var elementos = par.match(/\w+/g); // Modificado para aceptar letras
-        var elementoA = elementos[0];
-        var elementoB = elementos[1];
+    // Matriz de relación R2
+    if (relacionR2) {
+        // Obtener los pares ordenados de la relación para mostrar en el título específico
+        var paresOrdenadosR2 = relacionR2.join(', ');
 
-        var indiceA = conjuntoA.indexOf(elementoA);
-        var indiceB = conjuntoA.indexOf(elementoB);
+        // Crear el texto del título específico que incluye los pares ordenados de la relación R2
+        var tituloEspecificoTextoR2 = "R2: " + paresOrdenadosR2;
 
-        if (indiceA !== -1 && indiceB !== -1) {
-            matrizRelacion[indiceA][indiceB] = 1;
-        }
-    });
+        // Crear el elemento de título específico para R2 y establecer su contenido
+        var tituloEspecificoElementoR2 = document.createElement('p');
+        tituloEspecificoElementoR2.textContent = tituloEspecificoTextoR2;
 
-    // Crear y agregar la tabla de la matriz de relación
-    var tabla = document.createElement('table');
-    var encabezado = tabla.createTHead().insertRow();
-    encabezado.insertCell().appendChild(document.createTextNode(''));
+        // Agregar el título específico de R2 al contenedor de resultado en la
+            // página
+           resultado.appendChild(tituloEspecificoElementoR2);
+           // Crear la matriz de relación R2 inicializada con ceros
+           var matrizRelacionR2 = [];
+           for (var i = 0; i < conjuntoB.length; i++) {
+               matrizRelacionR2[i] = [];
+               for (var j = 0; j < conjuntoC.length; j++) {
+                   matrizRelacionR2[i][j] = 0;
+               }
+           }
+   
+           // Llenar la matriz de relación R2 según los pares ordenados
+           relacionR2.forEach(function(par) {
+               var elementos = par.match(/\w+/g); // Modificado para aceptar letras
+               var elementoB = elementos[0];
+               var elementoC = elementos[1];
+   
+               var indiceB = conjuntoB.indexOf(elementoB);
+               var indiceC = conjuntoC.indexOf(elementoC);
+   
+               if (indiceB !== -1 && indiceC !== -1) {
+                   matrizRelacionR2[indiceB][indiceC] = 1;
+               }
+           });
+   
+           // Crear y agregar la tabla de la matriz de relación R2
+           var tablaR2 = document.createElement('table');
+           var encabezadoR2 = tablaR2.createTHead().insertRow();
+           encabezadoR2.insertCell().appendChild(document.createTextNode(''));
+   
+           conjuntoC.forEach(function(elemento) {
+               encabezadoR2.insertCell().appendChild(document.createTextNode(elemento));
+           });
+   
+           conjuntoB.forEach(function(fila, indiceFila) {
+               var row = tablaR2.insertRow();
+               row.insertCell().appendChild(document.createTextNode(fila));
+               matrizRelacionR2[indiceFila].forEach(function(valor) {
+                   var cell = row.insertCell();
+                   cell.appendChild(document.createTextNode(valor));
+               });
+           });
+   
+           resultado.appendChild(tablaR2);
+       }
 
-    conjuntoA.forEach(function(elemento) {
-        encabezado.insertCell().appendChild(document.createTextNode(elemento));
-    });
-
-    conjuntoA.forEach(function(fila, indiceFila) {
-        var row = tabla.insertRow();
-        row.insertCell().appendChild(document.createTextNode(fila));
-        matrizRelacion[indiceFila].forEach(function(valor) {
-            var cell = row.insertCell();
-            cell.appendChild(document.createTextNode(valor));
+       // Generar y mostrar la relación inversa de R2
+        var relacionInversaR2 = relacionR2.map(function(par) {
+            var elementos = par.match(/\w+/g);
+            return "(" + elementos[1] + ", " + elementos[0] + ")";
         });
-    });
 
-    resultado.appendChild(tabla);
-}
+        var tituloRelacionInversaR2 = document.createElement('p');
+        tituloRelacionInversaR2.textContent = "Relación Inversa R2: {" + relacionInversaR2.join(', ') + "}";
 
+        resultado.appendChild(tituloRelacionInversaR2);
+   }
 function irAGrafos() {
     window.location.href = "Grafos.html"
 }
