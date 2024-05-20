@@ -3,7 +3,7 @@ let selectedNode = null;
 let arcos = [];
 let flechas = [];
 let relaciones = [];
-let vertexCount = -1;
+let vertexCount = 0; // Cambiar a 0 para que el primer nodo sea 1
 
 function actualizarRelaciones() {
   relaciones = [];
@@ -26,13 +26,13 @@ function imprimirMatriz() {
   
   // Agregar encabezados horizontales
   for (let i = 0; i < relaciones.length; i++) {
-    matrizStr += `<td style="color: blue;">${i}</td>`;
+    matrizStr += `<td style="color: blue;">${i + 1}</td>`;
   }
   
   matrizStr += "</tr>";
 
   for (let i = 0; i < relaciones.length; i++) {
-    matrizStr += `<tr><td style="color: blue;">${i}</td>`; // Agregar encabezado vertical
+    matrizStr += `<tr><td style="color: blue;">${i + 1}</td>`; // Agregar encabezado vertical
     for (let j = 0; j < relaciones[i].length; j++) {
       // Establecer el estilo de color blanco para los números
       matrizStr += `<td style="color: white;">${relaciones[i][j]}</td>`;
@@ -43,26 +43,98 @@ function imprimirMatriz() {
   return matrizStr;
 }
 
+function verificarReflexividad() {
+  for (let i = 0; i < relaciones.length; i++) {
+    if (relaciones[i][i] !== 1) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function verificarSimetria() {
+  for (let i = 0; i < relaciones.length; i++) {
+    for (let j = 0; j < relaciones.length; j++) {
+      if (relaciones[i][j] === 1 && relaciones[j][i] !== 1) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function verificarAntisimetria() {
+  for (let i = 0; i < relaciones.length; i++) {
+    for (let j = 0; j < relaciones.length; j++) {
+      if (i !== j && relaciones[i][j] === 1 && relaciones[j][i] === 1) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function verificarTransitividad() {
+  for (let i = 0; i < relaciones.length; i++) {
+    for (let j = 0; j < relaciones.length; j++) {
+      for (let k = 0; k < relaciones.length; k++) {
+        if (relaciones[i][j] === 1 && relaciones[j][k] === 1 && relaciones[i][k] !== 1) {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+}
+
+function determinarTipoRelacion(reflexiva, simetrica, antisimetrica, transitiva) {
+  if (reflexiva && simetrica && transitiva) {
+    return "Relación de Equivalencia";
+  } else if (reflexiva && antisimetrica && transitiva) {
+    return "Orden Parcial";
+  } else if (reflexiva && antisimetrica && transitiva && simetrica) {
+    return "Orden Total";
+  } else {
+    return "Ninguna";
+  }
+}
 
 function actualizarYMostrarResultados() {
   actualizarRelaciones();
+  
+  const reflexiva = verificarReflexividad();
+  const simetrica = verificarSimetria();
+  const antisimetrica = verificarAntisimetria();
+  const transitiva = verificarTransitividad();
+  
+  const tipoRelacion = determinarTipoRelacion(reflexiva, simetrica, antisimetrica, transitiva);
+
   let resultadosStr = `
-  <p>${imprimirMatriz()}</p>
-  <p style="color: white;">Relaciones:</p>
-  <ul>
+    <p>${imprimirMatriz()}</p>
+    <p style="color: white;">Relaciones:</p>
+    <ul>
   `;
   for (let i = 0; i < relaciones.length; i++) {
     for (let j = 0; j < relaciones[i].length; j++) {
       if (relaciones[i][j] === 1) {
-        // Establecer el estilo de color para las relaciones
         resultadosStr += `<li style="color: white;">(${nodes[i].number}, ${nodes[j].number})</li>`;
       }
     }
   }
   resultadosStr += "</ul>";
+  resultadosStr += `
+    <p style="color: white;">Propiedades:</p>
+    <ul>
+      <li style="color: white;">Reflexiva: ${reflexiva ? "verdadero" : "falso"}</li>
+      <li style="color: white;">Simétrica: ${simetrica ? "verdadero" : "falso"}</li>
+      <li style="color: white;">Antisimétrica: ${antisimetrica ? "verdadero" : "falso"}</li>
+      <li style="color: white;">Transitiva: ${transitiva ? "verdadero" : "falso"}</li>
+    </ul>
+    <p style="color: white;">Tipo de relación: ${tipoRelacion}</p>
+  `;
+
   document.getElementById("resultado").innerHTML = resultadosStr;
 }
-
 
 function getNodeAt(x, y, nodes) {
   for (let index = 0; index < nodes.length; index++) {
@@ -103,7 +175,7 @@ function drawNodes(ctx, nodes) {
     }
 
     ctx.font = "30px Arial";
-    ctx.fillText(index, node.x - 9, node.y - 25);
+    ctx.fillText(node.number, node.x - 9, node.y - 25); // Mostrar el número del nodo
   }
 }
 
@@ -168,7 +240,7 @@ window.onload = async () => {
     }
 
     if (selectedNode === null) {
-      nodes.push({ x, y, number: ++vertexCount });               //aqui se guarda la informacion de los pares or
+      nodes.push({ x, y, number: ++vertexCount }); // Incrementar vertexCount antes de asignarlo
     }
 
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -177,14 +249,12 @@ window.onload = async () => {
       arcos.push({ node1: selectedNode, node2: tempNode });
       selectedNode = null;
       tempNode = null;
-
     }
     drawArcos(context, arcos);
     drawNodes(context, nodes);
     drawFlechas(context, flechas);
     actualizarYMostrarResultados();
   });
-
 
   document.getElementById("drawArrow").addEventListener("click", () => {
     if (arcos.length > 0) {
