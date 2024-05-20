@@ -753,56 +753,66 @@ function calcularProductoCruz() {
 
 function calcularDiferenciaSimetrica() {
     // Obtener los conjuntos del input
-    var conjuntoA = document.getElementById("conjuntoA").value.split(",").map(function(item) {
-        return item.trim();
-    }).filter(function(item) {
-        return item !== "";
-    });
+    var conjuntoA = document.getElementById("conjuntoA").value;
+    var conjuntoB = document.getElementById("conjuntoB").value;
+    var conjuntoC = document.getElementById("conjuntoC").value;
 
-    var conjuntoB = document.getElementById("conjuntoB").value.split(",").map(function(item) {
-        return item.trim();
-    }).filter(function(item) {
-        return item !== "";
-    });
+    // Función para dividir el conjunto en elementos individuales y subconjuntos
+    function dividirElementos(conjunto) {
+        var elementos = [];
+        var temp = "";
+        var dentroSubconjunto = false;
 
-    var conjuntoC = document.getElementById("conjuntoC").value.split(",").map(function(item) {
-        return item.trim();
-    }).filter(function(item) {
-        return item !== "";
-    });
+        for (var i = 0; i < conjunto.length; i++) {
+            var char = conjunto[i];
 
-    // Calcular la diferencia simétrica A - B
-    var diferenciaAB = conjuntoA.filter(function(elemento) {
-        return !conjuntoB.includes(elemento);
-    });
+            if (char === '{') {
+                dentroSubconjunto = true;
+                temp += char;
+            } else if (char === '}') {
+                temp += char;
+                dentroSubconjunto = false;
+                elementos.push(temp.trim());
+                temp = "";
+            } else if (char === ',' && !dentroSubconjunto) {
+                if (temp.trim() !== "") {
+                    elementos.push(temp.trim());
+                }
+                temp = "";
+            } else {
+                temp += char;
+            }
+        }
 
-    var diferenciaBA = conjuntoB.filter(function(elemento) {
-        return !conjuntoA.includes(elemento);
-    });
+        if (temp.trim() !== "") {
+            elementos.push(temp.trim());
+        }
 
-    var diferenciaSimetricaAB = diferenciaAB.concat(diferenciaBA);
+        return elementos;
+    }
 
-    // Calcular la diferencia simétrica A - C
-    var diferenciaAC = conjuntoA.filter(function(elemento) {
-        return !conjuntoC.includes(elemento);
-    });
+    // Función para calcular la diferencia simétrica entre dos conjuntos
+    function diferenciaSimetrica(conjunto1, conjunto2) {
+        var diferencia1 = conjunto1.filter(function(elemento) {
+            return !conjunto2.includes(elemento);
+        });
 
-    var diferenciaCA = conjuntoC.filter(function(elemento) {
-        return !conjuntoA.includes(elemento);
-    });
+        var diferencia2 = conjunto2.filter(function(elemento) {
+            return !conjunto1.includes(elemento);
+        });
 
-    var diferenciaSimetricaAC = diferenciaAC.concat(diferenciaCA);
+        return diferencia1.concat(diferencia2);
+    }
 
-    // Calcular la diferencia simétrica B - C
-    var diferenciaBC = conjuntoB.filter(function(elemento) {
-        return !conjuntoC.includes(elemento);
-    });
+    // Dividir los conjuntos en elementos individuales y subconjuntos
+    var elementosA = dividirElementos(conjuntoA);
+    var elementosB = dividirElementos(conjuntoB);
+    var elementosC = dividirElementos(conjuntoC);
 
-    var diferenciaCB = conjuntoC.filter(function(elemento) {
-        return !conjuntoB.includes(elemento);
-    });
-
-    var diferenciaSimetricaBC = diferenciaBC.concat(diferenciaCB);
+    // Calcular las diferencias simétricas
+    var diferenciaSimetricaAB = diferenciaSimetrica(elementosA, elementosB);
+    var diferenciaSimetricaAC = diferenciaSimetrica(elementosA, elementosC);
+    var diferenciaSimetricaBC = diferenciaSimetrica(elementosB, elementosC);
 
     // Definición de la diferencia simétrica
     var definicion = "<p>Definición:</p>\n";
