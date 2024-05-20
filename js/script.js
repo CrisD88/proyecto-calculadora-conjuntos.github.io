@@ -627,19 +627,45 @@ function calcularComplementos() {
     var conjuntoC = document.getElementById("conjuntoC").value;
     var universo = document.getElementById("universo").value;
 
-    // Convertir los conjuntos en arrays
-    var elementosA = conjuntoA.split(",").map(function(item) {
-        return item.trim();
-    });
-    var elementosB = conjuntoB.split(",").map(function(item) {
-        return item.trim();
-    });
-    var elementosC = conjuntoC.split(",").map(function(item) {
-        return item.trim();
-    });
-    var elementosUniverso = universo.split(",").map(function(item) {
-        return item.trim();
-    });
+    // Función para dividir el conjunto en elementos individuales y subconjuntos
+    function dividirElementos(conjunto) {
+        var elementos = [];
+        var temp = "";
+        var dentroSubconjunto = false;
+
+        for (var i = 0; i < conjunto.length; i++) {
+            var char = conjunto[i];
+
+            if (char === '{') {
+                dentroSubconjunto = true;
+                temp += char;
+            } else if (char === '}') {
+                temp += char;
+                dentroSubconjunto = false;
+                elementos.push(temp.trim());
+                temp = "";
+            } else if (char === ',' && !dentroSubconjunto) {
+                if (temp.trim() !== "") {
+                    elementos.push(temp.trim());
+                }
+                temp = "";
+            } else {
+                temp += char;
+            }
+        }
+
+        if (temp.trim() !== "") {
+            elementos.push(temp.trim());
+        }
+
+        return elementos;
+    }
+
+    // Dividir los conjuntos en elementos individuales y subconjuntos
+    var elementosA = dividirElementos(conjuntoA);
+    var elementosB = dividirElementos(conjuntoB);
+    var elementosC = dividirElementos(conjuntoC);
+    var elementosUniverso = dividirElementos(universo);
 
     // Función para obtener el complemento de un conjunto respecto al universo
     function obtenerComplemento(conjunto, universo) {
