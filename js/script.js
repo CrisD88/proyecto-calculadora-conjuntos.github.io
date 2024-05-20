@@ -1037,6 +1037,11 @@ function calcularBinarias(){
     
     var des = 0;
 
+    // Añadir nota para recordar al usuario
+    var nota = document.createElement('p');
+    nota.textContent = "Nota: Asegúrese de colocar los elementos en el conjunto A y los pares ordenados en R1.";
+    resultado.appendChild(nota);
+
   //Reflexiva
     var bandera = 0;
     for (var i = 0; i < Relacion.length; i+=2) {
