@@ -445,6 +445,81 @@ function calcularModulo() {
     document.getElementById("resultado").innerHTML = resultadosStr;
 }
 
+function verificarRelaciones() {
+    const conjuntoA = new Set(document.getElementById("conjuntoA").value.split(',').map(el => el.trim()));
+    const conjuntoB = new Set(document.getElementById("conjuntoB").value.split(',').map(el => el.trim()));
+    const relacionesInput = document.getElementById("relacionA").value;
+
+    const relaciones = relacionesInput.match(/\(([a-zA-Z0-9]+),([a-zA-Z0-9]+)\)/g)?.map(rel => {
+        const [_, x, y] = rel.match(/\(([a-zA-Z0-9]+),([a-zA-Z0-9]+)\)/);
+        return { x, y };
+    }) || [];
+
+    const mapeo = new Map();
+
+    let esFuncion = true;
+
+    // Verificar si las relaciones forman una función y pertenecen a los conjuntos A y B
+    relaciones.forEach(({ x, y }) => {
+        if (!conjuntoA.has(x) || !conjuntoB.has(y)) {
+            esFuncion = false;
+        }
+        if (mapeo.has(x)) {
+            if (mapeo.get(x) !== y) {
+                esFuncion = false;
+            }
+        } else {
+            mapeo.set(x, y);
+        }
+    });
+
+    let esInyectiva = esFuncion;
+    let esSobreyectiva = esFuncion;
+
+    // Verificar inyectividad
+    const valoresMapeo = new Set(mapeo.values());
+    if (valoresMapeo.size !== mapeo.size) {
+        esInyectiva = false;
+    }
+
+    // Verificar sobreyectividad
+    if (conjuntoB.size !== valoresMapeo.size) {
+        esSobreyectiva = false;
+    }
+
+    let resultado = "";
+
+    if (!esFuncion) {
+        resultado = "La relación no es una función.";
+    } else if (esInyectiva && esSobreyectiva) {
+        resultado = "La función es biyectiva.";
+    } else if (esInyectiva) {
+        resultado = "La función es inyectiva.";
+    } else if (esSobreyectiva) {
+        resultado = "La función es sobreyectiva.";
+    } else {
+        resultado = "La función no es ni inyectiva ni sobreyectiva.";
+    }
+
+    const resultadosStr = `
+        <p>${imprimirConjunto("Conjunto A", Array.from(conjuntoA))}</p>
+        <p>${imprimirConjunto("Conjunto B", Array.from(conjuntoB))}</p>
+        <p>${imprimirRelaciones("Relaciones", relaciones)}</p>
+        <p>${resultado}</p>
+    `;
+
+    document.getElementById("resultado").innerHTML = resultadosStr;
+}
+
+function imprimirConjunto(nombre, conjunto) {
+    return `${nombre}: { ${conjunto.join(", ")} }`;
+}
+
+function imprimirRelaciones(nombre, relaciones) {
+    const relacionesStr = relaciones.map(rel => `(${rel.x}, ${rel.y})`).join(", ");
+    return `${nombre}: { ${relacionesStr} }`;
+}
+
 function calcularResta() {
     // Obtener los conjuntos de los inputs
     var conjuntoA = document.getElementById("conjuntoA").value;
