@@ -944,52 +944,85 @@ function mostrarResultadoRegion(R1, R2, R3, R4, R5, R6, R7, R8) {
 ----------------------------Composiciones--------------------------------
 */
 function CalcularComposicion(){
-    // Obtener los conjuntos ingresados por el usuario
-      //Relacion A
-    var temp2 = document.getElementById('relacionA').value.split(')').join('');
-    var temp1 = temp2.split('(').join('');
-    var Relacion1 = temp1.split(',');
-  
-      //Relacion B
-    var temp2 = document.getElementById('relacionB').value.split(')').join('');
-    var temp1 = temp2.split('(').join('');
-    var Relacion2 = temp1.split(','); 
-      
+    // Obtener las relaciones ingresadas por el usuario
+    var temp1 = document.getElementById('relacionA').value.replace(/\(|\)/g, '').split(',');
+    var Relacion1 = [];
+    for (var i = 0; i < temp1.length; i+=2) {
+        Relacion1.push([temp1[i], temp1[i+1]]);
+    }
+
+    var temp2 = document.getElementById('relacionB').value.replace(/\(|\)/g, '').split(',');
+    var Relacion2 = [];
+    for (var i = 0; i < temp2.length; i+=2) {
+        Relacion2.push([temp2[i], temp2[i+1]]);
+    }
+
     // Calcular la composicion de las relaciones
     var Relacion3 = calcularComposicion(Relacion1, Relacion2);
-  
-    mostrarResultadoComposicion(Relacion3);
-  }
-  function calcularComposicion (Relacion1, Relacion2){
+
+    // Mostrar el resultado
+    mostrarResultadoComposicion(Relacion3, Relacion1, Relacion2);
+}
+
+function calcularComposicion(Relacion1, Relacion2){
     var Relacion3 = [];
-    var tempo = [];
-    tempo[0] = [];
-    var l = 1;
-    for (var i = 1; i < Relacion1.length; i+=2) {
-      for (var j = 0; j < Relacion2.length; j+=2) {
-        if(Relacion1[i] == Relacion2[j]){
-          tempo.push("(" + Relacion1[i-1] + ", " + Relacion2[j+1] + ")");
-          console.log(tempo);
-          var bool = true;
-          for (var k = 0; k < l; k++){
-            if (tempo[k] == tempo[l]){
-              bool = false;
+    var conjuntoA = new Set(Relacion1.map(function(pair) { return pair[0]; }));
+    for (var i = 0; i < Relacion1.length; i++) {
+        for (var j = 0; j < Relacion2.length; j++) {
+            if (Relacion1[i][1] === Relacion2[j][0]) {
+                Relacion3.push([Relacion1[i][0], Relacion2[j][1]]);
             }
-          }
-          if (bool == true) {
-            Relacion3 = Relacion3.concat(tempo[l]);
-          }
-          l += 1;
-          console.log(Relacion3);
         }
-      }
     }
     return Relacion3;
-  }
-  function mostrarResultadoComposicion(Relacion3) {
+}
+
+function mostrarResultadoComposicion(Relacion3, Relacion1, Relacion2) {
     var resultadoContainer = document.getElementById('resultado');
-    var conjunto = '{' + Relacion3.join(', ') + '}';
+    var conjunto = '{' + Relacion3.map(function(pair) { return "(" + pair[0] + ", " + pair[1] + ")"; }).join(', ') + '}';
     resultadoContainer.innerHTML = 'Composicion de A -> C: <br> <strong>R1 ° R2:</strong> ' + conjunto + '<br><br>';
+
+    // Crear la matriz de relación
+    var matrizRelacion = [];
+    var conjuntoA = Array.from(new Set(Relacion1.map(function(pair) { return pair[0]; })));
+    var conjuntoC = Relacion2.map(function(pair) { return pair[1]; });
+
+    for (var i = 0; i < conjuntoA.length; i++) {
+        matrizRelacion[i] = [];
+        for (var j = 0; j < conjuntoC.length; j++) {
+            matrizRelacion[i][j] = 0;
+        }
+    }
+
+    for (var i = 0; i < Relacion1.length; i++) {
+        for (var j = 0; j < Relacion2.length; j++) {
+            if (Relacion1[i][1] === Relacion2[j][0]) {
+                var indiceA = conjuntoA.indexOf(Relacion1[i][0]);
+                var indiceC = conjuntoC.indexOf(Relacion2[j][1]);
+                matrizRelacion[indiceA][indiceC] = 1;
+            }
+        }
+    }
+
+    // Agregar la matriz de relación al resultado
+    var tabla = document.createElement('table');
+    var encabezado = tabla.createTHead().insertRow();
+    encabezado.insertCell().appendChild(document.createTextNode(''));
+
+    for (var j = 0; j < conjuntoC.length; j++) {
+        encabezado.insertCell().appendChild(document.createTextNode(conjuntoC[j]));
+    }
+
+    for (var i = 0; i < conjuntoA.length; i++) {
+        var row = tabla.insertRow();
+        row.insertCell().appendChild(document.createTextNode(conjuntoA[i]));
+        for (var j = 0; j < conjuntoC.length; j++) {
+            var cell = row.insertCell();
+            cell.appendChild(document.createTextNode(matrizRelacion[i][j]));
+        }
+    }
+
+    resultadoContainer.appendChild(tabla);
 }
 
 /* 
