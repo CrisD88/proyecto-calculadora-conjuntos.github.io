@@ -2,6 +2,7 @@ let nodes = [];
 let selectedNode = null;
 let arcos = [];
 let flechas = [];
+let bucles = [];
 let relaciones = [];
 let vertexCount = 0; // Cambiar a 0 para que el primer nodo sea 1
 
@@ -214,7 +215,7 @@ function drawNodes(ctx, nodes) {
     }
 
     ctx.font = "30px Arial";
-    ctx.fillText(node.number, node.x - 9, node.y - 25); // Mostrar el número del nodo
+    ctx.fillText(node.number, node.x +25, node.y + 25); // Mostrar el número del nodo
   }
 }
 
@@ -258,6 +259,21 @@ function drawArrow(ctx, fromX, fromY, toX, toY) {
   ctx.stroke();
 }
 
+function drawLoop(ctx, node) {
+  ctx.beginPath();
+  ctx.arc(node.x, node.y - 30, 15, 0, 2 * Math.PI);
+  ctx.strokeStyle = "#000000";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+}
+
+function drawLoops(ctx, bucles) {
+  for (let index = 0; index < bucles.length; index++) {
+    const node = bucles[index];
+    drawLoop(ctx, node);
+  }
+}
+
 window.onload = async () => {
   var canvas = document.getElementById("myCanvas");
   var context = canvas.getContext("2d");
@@ -292,7 +308,26 @@ window.onload = async () => {
     drawArcos(context, arcos);
     drawNodes(context, nodes);
     drawFlechas(context, flechas);
+    drawLoops(context, bucles);
     actualizarYMostrarResultados();
+  });
+
+  canvas.addEventListener("dblclick", (e) => {
+    let x = e.clientX - canvas.offsetLeft;
+    let y = e.clientY - canvas.offsetTop;
+
+    let node = getNodeAt(x, y, nodes);
+
+    if (node !== null) {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      arcos.push({ node1: node, node2: node }); // Añadir un bucle
+      bucles.push(node); // Guardar el nodo del bucle
+      drawArcos(context, arcos);
+      drawNodes(context, nodes);
+      drawFlechas(context, flechas);
+      drawLoops(context, bucles);
+      actualizarYMostrarResultados();
+    }
   });
 
   document.getElementById("drawArrow").addEventListener("click", () => {
