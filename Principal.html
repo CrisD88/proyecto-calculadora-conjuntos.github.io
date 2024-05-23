@@ -48,46 +48,103 @@
   </div>
 
   <div class="contenedor-botones">
-      <div class="button-row">
-        <button onclick="Subconjuntos()">⊆</button>
-        <button onclick="calcularUnion()">∪</button>
-      </div>
-      <div class="button-row">
-        <button onclick="calcularInterseccion()">∩</button>
-        <button onclick="calcularResta()">-</button>
-      </div>
-      <div class="button-row">
-        <button onclick="calcularConjuntoPotencia()">P(x)</button>
-        <button onclick="calcularComplementos()">X'</button>
-      </div>
-      <div class="button-row">
-        <button onclick="calcularProductoCruz()">AxB</button>
-        <button onclick="calcularDiferenciaSimetrica()">∆</button>
-      </div>
-      <div class="button-row">
-        <button onclick="calcularCardinalidades()">| A |</button>
-        <button onclick="CalcularRegion()">Regiones</button>
-      </div>
-      <div class="button-row">
-        <button onclick="mostrarMatrizRelacion()">Matriz de Relacion e Inversa</button>
-        <button onclick="calcularBinarias()">Orden (Parcial, Equivalencia, Total)</button>
-      </div>
-      <div class="button-row">
-        <button onclick="CalcularComposicion()">Composicion</button>
-        <button onclick="irAGrafos()">Grafos</button>
-      </div>
-      <div class="button-row">
-        <button onclick="operacionesConModulo()">Clase de Equivalencia de Operaciones</button>
-        <button onclick="calcularClasesDeEquivalencia()">Clases de Equivalencia</button>
-      </div>
-          <div class="button-row">
-        <button onclick="calcularModulo()">Equivalencia Mod</button>
-        <button onclick="verificarRelaciones()">¿Función o no?</button>
-      </div>
-  </div>
+    <div class="button-row">
+        <div class="tooltip">
+            <button onclick="Subconjuntos()">⊆</button>
+            <span class="tooltiptext">Necesita ingresar datos en A, B y C</span>
+        </div>
+        <div class="tooltip">
+            <button onclick="calcularUnion()">∪</button>
+            <span class="tooltiptext">Necesita ingresar datos en A, B y C</span>
+        </div>
+    </div>
+    <div class="button-row">
+        <div class="tooltip">
+            <button onclick="calcularInterseccion()">∩</button>
+            <span class="tooltiptext">Necesita ingresar datos en A, B y C</span>
+        </div>
+        <div class="tooltip">
+            <button onclick="calcularResta()">-</button>
+            <span class="tooltiptext">Necesita ingresar datos en A, B y C</span>
+        </div>
+    </div>
+    <div class="button-row">
+        <div class="tooltip">
+            <button onclick="calcularConjuntoPotencia()">P(x)</button>
+            <span class="tooltiptext">Necesita ingresar datos en A, B y C</span>
+        </div>
+        <div class="tooltip">
+            <button onclick="calcularComplementos()">X'</button>
+            <span class="tooltiptext">Necesita ingresar datos en U, A, B y C</span>
+        </div>
+    </div>
+    <div class="button-row">
+        <div class="tooltip">
+            <button onclick="calcularProductoCruz()">AxB</button>
+            <span class="tooltiptext">Necesita ingresar datos en A, B y C</span>
+        </div>
+        <div class="tooltip">
+            <button onclick="calcularDiferenciaSimetrica()">∆</button>
+            <span class="tooltiptext">Necesita ingresar datos en A, B y C</span>
+        </div>
+    </div>
+    <div class="button-row">
+        <div class="tooltip">
+            <button onclick="calcularCardinalidades()">| A |</button>
+            <span class="tooltiptext">Necesita ingresar datos en U, A, B y C</span>
+        </div>
+        <div class="tooltip">
+            <button onclick="CalcularRegion()">Regiones</button>
+            <span class="tooltiptext">Necesita ingresar datos en U, A, B y C</span>
+        </div>
+    </div>
+    <div class="button-row">
+        <div class="tooltip">
+            <button onclick="mostrarMatrizRelacion()">Matriz de Relacion e Inversa</button>
+            <span class="tooltiptext">Necesita ingresar datos en R1 y R2</span>
+        </div>
+        <div class="tooltip">
+            <button onclick="calcularBinarias()">Orden (Parcial, Equivalencia, Total)</button>
+            <span class="tooltiptext">Necesita ingresar datos en A y R1</span>
+        </div>
+    </div>
+    <div class="button-row">
+        <div class="tooltip">
+            <button onclick="CalcularComposicion()">Composición</button>
+            <span class="tooltiptext">Necesita ingresar datos en R1 y R2</span>
+        </div>
+        <div class="tooltip">
+            <button onclick="irAGrafos()">Grafos</button>
+            <span class="tooltiptext">Ir a Grafos</span>
+        </div>
+    </div>
+    <div class="button-row">
+        <div class="tooltip">
+            <button onclick="operacionesConModulo()">Clase de Equivalencia de Operaciones</button>
+            <span class="tooltiptext">Necesita ingresar UN SOLO DATO en A, B y M</span>
+        </div>
+        <div class="tooltip">
+            <button onclick="calcularClasesDeEquivalencia()">Clases de Equivalencia</button>
+            <span class="tooltiptext">Necesita ingresar datos en A, B, C y M</span>
+        </div>
+    </div>
+    <div class="button-row">
+        <div class="tooltip">
+            <button onclick="calcularModulo()">Equivalencia Mod</button>
+            <span class="tooltiptext">Necesita ingresar UN SOLO DATO en A, B y M</span>
+        </div>
+        <div class="tooltip">
+            <button onclick="verificarRelaciones()">¿Función o no?</button>
+            <span class="tooltiptext">Necesita ingresar datos en A, B y R1</span>
+        </div>
+    </div>
+</div>
 
   <div class="contenedor-borrar">
+    <div class="tooltip">
     <button onclick="limpiarResultado()" class="borrar">Limpiar</button>
+    <span class="tooltiptext">Limpiar resultados</span>
+    </div>
   </div>
 
   <div id="resultado"></div>
