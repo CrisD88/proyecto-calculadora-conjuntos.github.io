@@ -99,6 +99,40 @@ function determinarTipoRelacion(reflexiva, simetrica, antisimetrica, transitiva)
   }
 }
 
+function encontrarMaximales() {
+  let maximales = [];
+  for (let i = 0; i < relaciones.length; i++) {
+    let esMaximal = true;
+    for (let j = 0; j < relaciones.length; j++) {
+      if (relaciones[i][j] === 1 && i !== j) {
+        esMaximal = false;
+        break;
+      }
+    }
+    if (esMaximal) {
+      maximales.push(nodes[i].number);
+    }
+  }
+  return maximales;
+}
+
+function encontrarMinimales() {
+  let minimales = [];
+  for (let i = 0; i < relaciones.length; i++) {
+    let esMinimal = true;
+    for (let j = 0; j < relaciones.length; j++) {
+      if (relaciones[j][i] === 1 && i !== j) {
+        esMinimal = false;
+        break;
+      }
+    }
+    if (esMinimal) {
+      minimales.push(nodes[i].number);
+    }
+  }
+  return minimales;
+}
+
 function actualizarYMostrarResultados() {
   actualizarRelaciones();
   
@@ -108,6 +142,9 @@ function actualizarYMostrarResultados() {
   const transitiva = verificarTransitividad();
   
   const tipoRelacion = determinarTipoRelacion(reflexiva, simetrica, antisimetrica, transitiva);
+
+  const maximales = encontrarMaximales();
+  const minimales = encontrarMinimales();
 
   let resultadosStr = `
     <p>${imprimirMatriz()}</p>
@@ -131,6 +168,8 @@ function actualizarYMostrarResultados() {
       <li style="color: white;">Transitiva: ${transitiva ? "verdadero" : "falso"}</li>
     </ul>
     <p style="color: white;">Tipo de relación: ${tipoRelacion}</p>
+    <p style="color: white;">Maximales: ${maximales.join(', ')}</p>
+    <p style="color: white;">Minimales: ${minimales.join(', ')}</p>
   `;
 
   document.getElementById("resultado").innerHTML = resultadosStr;
@@ -265,3 +304,4 @@ window.onload = async () => {
     }
   });
 };
+
