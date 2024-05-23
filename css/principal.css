@@ -69,6 +69,12 @@ button:hover {
     background-color: gray;
 }
 
+.button-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
 #resultado {
     padding: 20px;
     border-top: 1px solid gray;
@@ -117,6 +123,10 @@ button:hover {
 }
 
 .contenedor-botones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     text-align: center;
     margin-top: 20px;
 }
@@ -130,4 +140,48 @@ button:hover {
 .contenedor-borrar {
     text-align: right;
     margin-top: 10px; /* Ajusta este margen según sea necesario */
+}
+
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.tooltip button {
+    padding: 10px 20px;
+    background-color: #074D00;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 5px;
+}
+
+.tooltip button:hover {
+    background-color: #0dff00;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 150px;
+    background-color: #000000;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Posición del tooltip */
+    left: 50%;
+    margin-left: -75px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
 }
