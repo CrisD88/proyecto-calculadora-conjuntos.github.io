@@ -2,7 +2,6 @@ body {
   background-color: #99908a;
   display: flex;
   flex-direction: column;
-  margin: 30px;
 }
 
 h1 {
