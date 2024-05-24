@@ -1,6 +1,9 @@
 * {
     background-color: #99908a;
     color: rgb(0, 0, 0);
+}
+
+#resultado {
     font-weight: bold;
 }
 
