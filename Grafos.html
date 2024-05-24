@@ -6,18 +6,16 @@
     <link rel="stylesheet" href="css/grafos.css">
     <script src="js/grafos.js"></script>
     <title>Grafos</title>
-    <style>
-        footer {
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
 </head>
 <body>
-    <canvas id="myCanvas" width="800" height="600" style="border: 1px solid black;"></canvas>
-    <button id="drawArrow" class="btn">Dibujar Flecha</button>
+    <h1>Grafos</h1>
+    <div id="contentContainer">
+        <div id="buttonContainer">
+            <button id="drawArrow" class="btn">Dibujar Flecha</button>
+            <button id="clearCanvas" class="btn">Limpiar</button>
+        </div>
+        <canvas id="myCanvas"></canvas>
+    </div>
     <div id="resultado"></div>
 
     <footer>
