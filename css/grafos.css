@@ -72,9 +72,10 @@ footer {
   width: 100%; 
   box-sizing: border-box; 
   margin-top: 30px;
+  background-color: #323232;
 }
 
 footer p {
-  color: #323232;
+  color: white;
   font-family: sans-serif;
 }
