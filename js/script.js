@@ -1010,9 +1010,8 @@ function mostrarResultadoRegion(R1, R2, R3, R4, R5, R6, R7, R8) {
   //var cardinalidad = R1.length;
   
   resultadoContainer.innerHTML = 'Elementos: ' + '<br>' + '<br>' + 
-  '<strong>Region 1:</strong> ' + JSON.stringify(R1) + '<br>' + '<br>' + '<strong>Region 2:</strong> ' + JSON.stringify(R2) + '<br>' + '<br>' + '<strong>Region 3:</strong> ' + JSON.stringify(R3) + '<br>' + '<br>' + '<strong>Region 4:</strong> ' + JSON.stringify(R4) + '<br>' + '<br>' + '<strong>Region 5:</strong> ' + JSON.stringify(R5) + '<br>' + '<br>' + '<strong>Region 6:</strong> ' + JSON.stringify(R6) + '<br>' + '<br>' + '<strong>Region 7:</strong> ' + JSON.stringify(R7) + '<br>' + '<br>' + '<strong>Region 8:</strong> ' + JSON.stringify(R8) + '<br>';
-
-  /* resultadoContainer.innerHTML = '<strong>Unión de Conjuntos:</strong><p>' + 'Elementos: ' + JSON.stringify(union) + '</p><p>' + 'Cardinalidad: ' + cardinalidad + '</p>'; */
+'<strong>Region 1:</strong> {' + R1 + '} <br>' + '<br>' + '<strong>Region 2:</strong> {' + R2 + '} <br>' + '<br>' + '<strong>Region 3:</strong> {' + R3 + '} <br>' + '<br>' + '<strong>Region 4:</strong> {' + R4 + '} <br>' + '<br>' + '<strong>Region 5:</strong> {' + R5 + '} <br>' + '<br>' + '<strong>Region 6:</strong> {' + R6 + '} <br>' + '<br>' + '<strong>Region 7:</strong> {' + R7 + '} <br>' + '<br>' + '<strong>Region 8:</strong> {' + R8 + '} <br>';
+    
 }
 
 /* 
@@ -1106,172 +1105,240 @@ function mostrarResultadoComposicion(Relacion3, Relacion1, Relacion2) {
 
 function calcularBinarias(){
     var ConjuntoA = document.getElementById('conjuntoA').value.split(',');
+    var ConjuntoB = document.getElementById('conjuntoB').value.split(',');
+    var ConjuntoC = document.getElementById('conjuntoC').value.split(',');
+    
     var temp2 = document.getElementById('relacionA').value.split(')').join('');
     var temp1 = temp2.split('(').join('');
-    var Relacion = temp1.split(',');
-    
-    var des = 0;
+    var Relacion1 = temp1.split(',');
+
+    temp2 = document.getElementById('relacionB').value.split(')').join('');
+    temp1 = temp2.split('(').join('');
+    var Relacion2 = temp1.split(',');
+
+    temp2 = document.getElementById('relacionC').value.split(')').join('');
+    temp1 = temp2.split('(').join('');
+    var Relacion3 = temp1.split(',');
 
     // Añadir nota para recordar al usuario
     var nota = document.createElement('p');
     nota.textContent = "Nota: Asegúrese de colocar los elementos en el conjunto A y los pares ordenados en R1.";
     resultado.appendChild(nota);
 
-  //Reflexiva
+    var ResultadoA = calcularResultado(Relacion1, ConjuntoA)
+    var ResultadoB = calcularResultado(Relacion2, ConjuntoB)
+    var ResultadoC = calcularResultado(Relacion3, ConjuntoC)
+
+    mostrarResultado(ResultadoA, ResultadoB, ResultadoC);
+}
+/* --------------------------------- Reflexividad */
+function calcularReflexividad(Relacion, Conjunto){
     var bandera = 0;
     for (var i = 0; i < Relacion.length; i+=2) {
         if (Relacion[i] == Relacion[i+1]){
             bandera += 1;
         }
     }
-    if (bandera == ConjuntoA.length) {
-      var Reflexiva = 'La relacion es Reflexiva';
-      des += 1;
+    var bool = false;
+    if (bandera == Conjunto.length) {
+      var bool = true;
     }
-    else {
-      var Reflexiva = 'La relacion no es Reflexiva';
-    }
-
-    //Transitividad
-  var Transitiva =  'La relacion es Transitiva';
-  des += 2;
+    return bool;
+}
+/* --------------------------------- Trasitividad */
+function calcularTransitividad(Relacion){
+    var bool = true;
     for (let [a,b] of Relacion) {
-      // Verificar si existe un elemento c tal que (a, c) y (c, b) pertenecen a la relación
-      for (let [c,d] of Relacion) {
-        if (b === c && !Relacion.has([a,d])) {
-          var Transitiva =  'La relacion no es Transitiva';
-          des += 2;
-          j += Relacion.length;
-          i += Relacion.length;
+        // Verificar si existe un elemento c tal que (a, c) y (c, b) pertenecen a la relación
+        for (let [c,d] of Relacion) {
+            if (b === c && !Relacion.has([a,d])) {
+                var bool = false;
+                j += Relacion.length;
+                i += Relacion.length;
+                //return Transitividad; // No es transitiva
+            }
         }
-      }
     }
-  
-  //Antisimetria
-    var Antisimetria = 'La relacion es Antisimetrica';
-    des += 3;
+    return bool;
+}
+/* --------------------------------- Antisimetria */
+function calcularAntisimetria(Relacion){
+    var bool = true;
     for (var i = 0; i < Relacion.length; i+=2) {
-      for (var j = 0; j < Relacion.length; j+=2){
-        if (j == i){
-          j += 2;
+        for (var j = 0; j < Relacion.length; j+=2){
+            if (j == i){
+                j += 2;
+            }
+            if (Relacion[i]+Relacion[i+1] == Relacion[j+1]+Relacion[j]){
+                var bool = false;
+                j += Relacion.length;
+                i += Relacion.length;
+            }
         }
-        if (Relacion[i]+Relacion[i+1] == Relacion[j+1]+Relacion[j]){
-          var Antisimetria = 'La relacion no es Antisimetrica';
-          des -= 3;
-          j += Relacion.length;
-          i += Relacion.length;
-        }
-      }
     }
-
-    //Simetria
+    return bool;
+}
+/* --------------------------------- Simetria */
+function calcularSimetria(Relacion){
     bandera = 0;
     for (var i = 0; i < Relacion.length; i+=2) {
-      for (var j = 1; j < Relacion.length; j+=2){
-        if (Relacion[i] == Relacion[j]){
-          if (Relacion[i+1] == Relacion[j-1]){
-            bandera += 2;
-          }
+        for (var j = 1; j < Relacion.length; j+=2){
+            if (Relacion[i] == Relacion[j]){
+                if (Relacion[i+1] == Relacion[j-1]){
+                    bandera += 2;
+                }
+            }
         }
-      }
     }
     if (bandera == Relacion.length) {
-      var Simetria = 'La relacion es Simetrica';
-      des += 4;
+        var bool = true;
     }
     else{
-      var Simetria = 'La relacion no es Simetrica';
+        var bool = false;
     }
-
-    var orden;
+    return bool;
+}
+// ---------------------- Calcula los minimales y maximales
+function calcularMIandMa(Relacion, Conjunto){
     var mac, mic;
     var mi = [];
     var ma = [];
 
-    if(des < 6){
-        orden = '∴ La relacion no pertenece a ninugun orden';
-        mostrarResultadoBinario(Reflexiva, Simetria, Transitiva, Antisimetria, orden)
-    }
-    if (des == 6){
-        orden = '∴ La relacion es de Orden Parcial';
-        for (var i = 0; i < ConjuntoA.length; i++){
-            mac = 0;
-            mic = 0;
-            for (var j = 0; j < Relacion.length; j+=2){
-                if (ConjuntoA[i] == Relacion[j]){
-                    mac += 1;
-                }
-                if (ConjuntoA[i] == Relacion[j+1]){
-                    mic += 1;
-                }
+    for (var i = 0; i < Conjunto.length; i++){
+        mac = 0;
+        mic = 0;
+        for (var j = 0; j < Relacion.length; j+=2){
+            if (Conjunto[i] == Relacion[j]){
+                mac += 1;
             }
-            if (mac == 1){
-                ma = ma.concat(ConjuntoA[i]);
-            }
-            if (mic == 1){
-                mi = mi.concat(ConjuntoA[i]);
+            if (Conjunto[i] == Relacion[j+1]){
+                mic += 1;
             }
         }
-        var minimales = 'Los minimales son: '+mi;
-        var maximales = 'Los maximales son: '+ma;
-        mostrarResultadoParcial(Reflexiva, Simetria, Transitiva, Antisimetria, orden, minimales, maximales);
+        if (mac == 1){
+            console.log(Conjunto[i]);
+            ma = ma.concat(Conjunto[i]);
+        }
+        if (mic == 1){
+            mi = mi.concat(Conjunto[i]);
+        }
     }
-    if (des == 7){
-        orden = '∴ La relacion es una Relacion Equivalente';
-        //Comprobar la Particion inducida
-        var comp = [];
-        var ConDis = [];
-        var ConCos = [];
-        var p = 1;
-        for (var k = 0; k < ConjuntoA.length; k++){
-            var  bool1 = true;
-            for (u = 0; u < comp.length; u++){
-                if (comp[u] == ConjuntoA[k]){
-                    bool1 = false;
-                }
+    var minimales = 'Los minimales son: '+mi+' <br>';
+    var maximales = 'Los maximales son: '+ma+' <br>';
+
+    var MiandMa = minimales + maximales;
+    return MiandMa;
+}
+// ------------------ Calcular conjunto disjunto y conjunto cosiente
+function calcularCosandDis(Relacion, Conjunto){
+    var comp = [];
+    var ConDis = [];
+    var ConCos = [];
+    var p = 1;
+    for (var k = 0; k < Conjunto.length; k++){
+        var  bool1 = true;
+        for (u = 0; u < comp.length; u++){
+            if (comp[u] == Conjunto[k]){
+                bool1 = false;
             }
-            if (bool1 == true){
-                var tempo = [];
-                ConCos.push('[' + ConjuntoA[k] + ']');
-                tempo.push(ConjuntoA[k]);
-                comp.push(ConjuntoA[k]);
-                for (var i = 0; i < Relacion.length; i+=2){
-                    if (ConjuntoA[k] == Relacion[i] && ConjuntoA[k] != Relacion[i   +1]){
-                        for (var j = 1; j < Relacion.length; j++){
-                            if (Relacion[i] == Relacion[j]){
-                                tempo.push(Relacion[i+1]);
-                                j += Relacion.length;
-                            }
+        }
+        if (bool1 == true){
+            var tempo = [];
+            ConCos.push(' [' + Conjunto[k] + ']');
+            tempo.push(Conjunto[k]);
+            comp.push(Conjunto[k]);
+            for (var i = 0; i < Relacion.length; i+=2){
+                if (Conjunto[k] == Relacion[i] && Conjunto[k] != Relacion[i+1]){
+                    for (var j = 1; j < Relacion.length; j++){
+                        if (Relacion[i] == Relacion[j]){
+                            tempo.push(Relacion[i+1]);
+                            j += Relacion.length;
                         }
-                        comp.push(Relacion[i+1]);
                     }
+                    comp.push(Relacion[i+1]);
                 }
-                ConDis.push(' A'+ p + " = {" + tempo + "}");
-                p += 1;
             }
+            ConDis.push('  A'+ p + " = {" + tempo + "}");
+            //console.log(ConDis[k])
+            p += 1;
         }
-        mostrarResultadoEquivalente(Reflexiva, Simetria, Transitiva, Antisimetria, orden, ConDis, ConCos)
     }
-    if (des == 10){
-        orden = '∴ La relacion es de Orden Total';
-        mostrarResultadoBinario(Reflexiva, Simetria, Transitiva, Antisimetria, orden)
+    var CosandDis = ' Conjunto Cociente: ' + ConCos + '<br> Particion Inducida: ' + ConDis + '<br>';
+    return CosandDis;
+}
+function calcularResultado(Relacion, Conjunto){
+    var des = 0;
+    var bool;
+    var Resultado = '';
+
+    // ----------------- Reflexiva
+    bool = calcularReflexividad(Relacion, Conjunto);
+    if (bool == true) {
+        Resultado += 'La relacion es Reflexiva <br>';
+        des += 2;
+    }
+    else {
+        Resultado += 'La relacion no es Reflexiva <br>';
     }
     
+    // ----------------- Transitividad
+    bool = calcularTransitividad(Relacion);
+    if (bool == true) {
+        Resultado += 'La relacion es Transitiva <br>';
+        des += 2;
+    }
+    else {
+        Resultado += 'La relacion no es Transitiva <br>';
+    }
+    
+    // ----------------- Antisimetria
+    bool = calcularAntisimetria(Relacion);
+    if (bool == true) {
+        Resultado += 'La relacion es Antisimetrica <br>';
+        des += 2;
+    }
+    else {
+        Resultado += 'La relacion no es Antisimetrica <br>';
+    }
+
+    // ----------------- Simetria
+    bool = calcularSimetria(Relacion);
+    if (bool == true) {
+        Resultado += 'La relacion es Simetrica <br>';
+        des += 3;
+    }
+    else{
+        Resultado += 'La relacion no es Simetrica <br>';
+    }
+
+    // -------------- Orden y especificaciones
+    if(des < 6){
+        Resultado += '∴ La relacion no pertenece a ninugun orden';
+    }
+    if (des == 6){
+        Resultado += '<br> ∴ La relacion es de Orden Parcial <br>';
+        //Obtener los minimales y maximales
+        var MiandMa = calcularMIandMa(Relacion, Conjunto);
+        Resultado += MiandMa;
+        
+    }
+    if (des == 7){
+        Resultado += '<br> ∴ La relacion es una Relacion Equivalente <br>';
+        //Comprobar los conjutos disjuntos
+        var CosandDis = calcularCosandDis(Relacion, Conjunto)
+        Resultado += CosandDis;
+        
+    }
+    if (des == 9){
+        Resultado += '∴ La relacion es de Orden Total';
+        
+    }
+    return Resultado;
 }
-//resultado de Orden parcial
-function mostrarResultadoParcial(Reflexiva, Simetria, Transitiva, Antisimetria, orden, minimales, maximales){
+//resultados
+function mostrarResultado(Resultado1, Resultado2, Resultado3){
     var resultadoContainer = document.getElementById('resultado');
-    resultadoContainer.innerHTML = '<strong>Relacion :</strong> ' + '<br>' + JSON.stringify(Reflexiva) + '<br>' + JSON.stringify(Simetria) + '<br>' + JSON.stringify(Antisimetria) + '<br>' + JSON.stringify(Transitiva) + '<br>' + '<br>' + JSON.stringify(orden) + '<br>' + JSON.stringify(minimales) + '<br>' + JSON.stringify(maximales);
-}
-//resultado de relacion equivalente
-function mostrarResultadoEquivalente(Reflexiva, Simetria, Transitiva, Antisimetria, orden, ConDis, ConCos){
-    var resultadoContainer = document.getElementById('resultado');
-    resultadoContainer.innerHTML = '<strong>Relacion :</strong> ' + '<br>' + JSON.stringify(Reflexiva) + '<br>' + JSON.stringify(Simetria) + '<br>' + JSON.stringify(Antisimetria) + '<br>' + JSON.stringify(Transitiva) + '<br>' + '<br>' + JSON.stringify(orden) + '<br> Conjunto Cociente: ' + JSON.stringify(ConCos) + '<br> Particion Inducida: ' + JSON.stringify(ConDis);
-}
-//para relacion total o ninguna
-function mostrarResultadoBinario(Reflexiva, Simetria, Transitiva, Antisimetria, orden){
-    var resultadoContainer = document.getElementById('resultado');
-    resultadoContainer.innerHTML = '<strong>Relacion :</strong> ' + '<br>' + JSON.stringify(Reflexiva) + '<br>' + JSON.stringify(Simetria) + '<br>' + JSON.stringify(Antisimetria) + '<br>' + JSON.stringify(Transitiva) + '<br>' + '<br>' + JSON.stringify(orden);
+    resultadoContainer.innerHTML = '<strong>Relacion A:</strong> ' + '<br>' + Resultado1 + '<br>' + '<strong>Relacion B:</strong> ' + '<br>' + Resultado2 + '<br>' + '<strong>Relacion C:</strong> ' + '<br>' + Resultado3;
 }
 
 function mostrarMatrizRelacion() {
