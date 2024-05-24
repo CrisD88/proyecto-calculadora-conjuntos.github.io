@@ -1010,8 +1010,13 @@ function mostrarResultadoRegion(R1, R2, R3, R4, R5, R6, R7, R8) {
   //var cardinalidad = R1.length;
   
   resultadoContainer.innerHTML = 'Elementos: ' + '<br>' + '<br>' + 
-'<strong>Region 1:</strong> {' + R1 + '} <br>' + '<br>' + '<strong>Region 2:</strong> {' + R2 + '} <br>' + '<br>' + '<strong>Region 3:</strong> {' + R3 + '} <br>' + '<br>' + '<strong>Region 4:</strong> {' + R4 + '} <br>' + '<br>' + '<strong>Region 5:</strong> {' + R5 + '} <br>' + '<br>' + '<strong>Region 6:</strong> {' + R6 + '} <br>' + '<br>' + '<strong>Region 7:</strong> {' + R7 + '} <br>' + '<br>' + '<strong>Region 8:</strong> {' + R8 + '} <br>';
-    
+  '<strong>Region 1 {A - (B ∪ C)}:</strong> ' + JSON.stringify(R1) + '<br>' + '<br>' + '<strong>Region 2 {B - (A ∪ C)}:</strong> ' + JSON.stringify(R2) + '<br>' + '<br>' + '<strong>Region 3 {C - (A ∪ B)}:</strong> ' + JSON.stringify(R3) + '<br>' + '<br>' + '<strong>Region 4 {(A ∩ C) - B}:</strong> ' + JSON.stringify(R4) + '<br>' + '<br>' + '<strong>Region 5 {(A ∩ B) - C}:</strong> ' + JSON.stringify(R5) + '<br>' + '<br>' + '<strong>Region 6 {(B ∩ C) - A}:</strong> ' + JSON.stringify(R6) + '<br>' + '<br>' + '<strong>Region 7 {A ∩ B ∩ C}:</strong> ' + JSON.stringify(R7) + '<br>' + '<br>' + '<strong>Region 8 {U - (A ∪ B ∪ C)}:</strong> ' + JSON.stringify(R8) + '<br>' + "<br>" + "<strong></strong";
+
+  // Agregar la imagen al final de los resultados
+  var img = document.createElement('img');
+  img.src = 'images/principal/Regiones.png'; // Reemplaza con la ruta correcta
+  img.alt = 'Regs.png';
+  resultadoContainer.appendChild(img);
 }
 
 /* 
