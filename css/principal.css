@@ -36,13 +36,12 @@ footer {
     text-align: center;
     padding: 15px;
     border-top: 1px solid black;
-    background-color: #323232;
+    margin-top: 20px;
 }
 
 footer p {
-    color: rgb(255, 255, 255);
+    color: #323232;
     font-family: sans-serif;
-    background-color: #323232;
 }
 
 .contenedor-universo {
@@ -83,6 +82,7 @@ button:hover {
 #resultado {
     padding: 20px;
     border-top: 1px solid black;
+    margin-top: 20px;
 }
 
 .contenedor-conjuntos {
