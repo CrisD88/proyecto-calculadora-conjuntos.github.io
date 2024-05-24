@@ -1313,7 +1313,7 @@ function calcularResultado(Relacion, Conjunto){
 
     // -------------- Orden y especificaciones
     if(des < 6){
-        Resultado += '∴ La relacion no pertenece a ninugun orden';
+        Resultado += '∴ La relacion no pertenece a ninugun orden <br>';
     }
     if (des == 6){
         Resultado += '<br> ∴ La relacion es de Orden Parcial <br>';
