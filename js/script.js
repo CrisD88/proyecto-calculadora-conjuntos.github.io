@@ -1125,11 +1125,6 @@ function calcularBinarias(){
     temp1 = temp2.split('(').join('');
     var Relacion3 = temp1.split(',');
 
-    // Añadir nota para recordar al usuario
-    var nota = document.createElement('p');
-    nota.textContent = "Nota: Asegúrese de colocar los elementos en el conjunto A y los pares ordenados en R1.";
-    resultado.appendChild(nota);
-
     var ResultadoA = calcularResultado(Relacion1, ConjuntoA)
     var ResultadoB = calcularResultado(Relacion2, ConjuntoB)
     var ResultadoC = calcularResultado(Relacion3, ConjuntoC)
@@ -1371,9 +1366,6 @@ function mostrarMatrizRelacion() {
     // Crear el elemento de título general y establecer su contenido
     var tituloGeneralElemento = document.createElement('p');
     tituloGeneralElemento.textContent = tituloGeneralTexto;
-
-    // Nota para el usuario
-    var notaTexto = "Nota: Para crear la relación R1, asegúrese de colocar los elementos en los conjuntos A y B. Para la relación R2, coloque los elementos en los conjuntos B y C.";
 
     // Crear el elemento de la nota y establecer su contenido
     var notaElemento = document.createElement('p');
