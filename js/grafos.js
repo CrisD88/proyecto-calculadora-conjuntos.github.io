@@ -23,7 +23,7 @@ function actualizarRelaciones() {
 }
 
 function imprimirMatriz() {
-  let matrizStr = "<p style='color: white;'>Matriz de relaciones:</p><table border='1'><tr><td></td>";
+  let matrizStr = "<p>Matriz de relaciones:</p><table border='1'><tr><td></td>";
   
   // Agregar encabezados horizontales
   for (let i = 0; i < relaciones.length; i++) {
@@ -36,7 +36,7 @@ function imprimirMatriz() {
     matrizStr += `<tr><td style="color: blue;">${i + 1}</td>`; // Agregar encabezado vertical
     for (let j = 0; j < relaciones[i].length; j++) {
       // Establecer el estilo de color blanco para los números
-      matrizStr += `<td style="color: white;">${relaciones[i][j]}</td>`;
+      matrizStr += `<td>${relaciones[i][j]}</td>`;
     }
     matrizStr += "</tr>";
   }
@@ -149,28 +149,28 @@ function actualizarYMostrarResultados() {
 
   let resultadosStr = `
     <p>${imprimirMatriz()}</p>
-    <p style="color: white;">Relaciones:</p>
+    <p>Relaciones:</p>
     <ul>
   `;
   for (let i = 0; i < relaciones.length; i++) {
     for (let j = 0; j < relaciones[i].length; j++) {
       if (relaciones[i][j] === 1) {
-        resultadosStr += `<li style="color: white;">(${nodes[i].number}, ${nodes[j].number})</li>`;
+        resultadosStr += `<li>(${nodes[i].number}, ${nodes[j].number})</li>`;
       }
     }
   }
   resultadosStr += "</ul>";
   resultadosStr += `
-    <p style="color: white;">Propiedades:</p>
+    <p>Propiedades:</p>
     <ul>
-      <li style="color: white;">Reflexiva: ${reflexiva ? "verdadero" : "falso"}</li>
-      <li style="color: white;">Simétrica: ${simetrica ? "verdadero" : "falso"}</li>
-      <li style="color: white;">Antisimétrica: ${antisimetrica ? "verdadero" : "falso"}</li>
-      <li style="color: white;">Transitiva: ${transitiva ? "verdadero" : "falso"}</li>
+      <li>Reflexiva: ${reflexiva ? "verdadero" : "falso"}</li>
+      <li>Simétrica: ${simetrica ? "verdadero" : "falso"}</li>
+      <li>Antisimétrica: ${antisimetrica ? "verdadero" : "falso"}</li>
+      <li>Transitiva: ${transitiva ? "verdadero" : "falso"}</li>
     </ul>
-    <p style="color: white;">Tipo de relación: ${tipoRelacion}</p>
-    <p style="color: white;">Maximales: ${maximales.join(', ')}</p>
-    <p style="color: white;">Minimales: ${minimales.join(', ')}</p>
+    <p>Tipo de relación: ${tipoRelacion}</p>
+    <p>Maximales: ${maximales.join(', ')}</p>
+    <p>Minimales: ${minimales.join(', ')}</p>
   `;
 
   document.getElementById("resultado").innerHTML = resultadosStr;
