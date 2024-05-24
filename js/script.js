@@ -1330,7 +1330,7 @@ function calcularResultado(Relacion, Conjunto){
         
     }
     if (des == 9){
-        Resultado += '∴ La relacion es de Orden Total';
+        Resultado += '∴ La relacion es de Orden Total <br>';
         
     }
     return Resultado;
