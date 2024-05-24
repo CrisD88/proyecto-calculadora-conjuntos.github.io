@@ -1044,16 +1044,16 @@ function CalcularComposicion(){
 }
 
 function calcularComposicion(Relacion1, Relacion2){
-    var Relacion3 = [];
-    var conjuntoA = new Set(Relacion1.map(function(pair) { return pair[0]; }));
+    var Relacion3 = new Set();  // Usamos un conjunto para evitar duplicados
     for (var i = 0; i < Relacion1.length; i++) {
         for (var j = 0; j < Relacion2.length; j++) {
             if (Relacion1[i][1] === Relacion2[j][0]) {
-                Relacion3.push([Relacion1[i][0], Relacion2[j][1]]);
+                Relacion3.add(JSON.stringify([Relacion1[i][0], Relacion2[j][1]]));
             }
         }
     }
-    return Relacion3;
+    // Convertimos el conjunto a una lista de pares
+    return Array.from(Relacion3).map(JSON.parse);
 }
 
 function mostrarResultadoComposicion(Relacion3, Relacion1, Relacion2) {
