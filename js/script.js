@@ -1313,7 +1313,7 @@ function calcularResultado(Relacion, Conjunto){
 
     // -------------- Orden y especificaciones
     if(des < 6){
-        Resultado += '∴ La relacion no pertenece a ninugun orden <br>';
+        Resultado += '<br> ∴ La relacion no pertenece a ninugun orden <br>';
     }
     if (des == 6){
         Resultado += '<br> ∴ La relacion es de Orden Parcial <br>';
@@ -1330,15 +1330,16 @@ function calcularResultado(Relacion, Conjunto){
         
     }
     if (des == 9){
-        Resultado += '∴ La relacion es de Orden Total <br>';
+        Resultado += '<br> ∴ La relacion es de Orden Total <br>';
         
     }
     return Resultado;
+
 }
 //resultados
 function mostrarResultado(Resultado1, Resultado2, Resultado3){
     var resultadoContainer = document.getElementById('resultado');
-    resultadoContainer.innerHTML = '<strong>Relacion A:</strong> ' + '<br>' + Resultado1 + '<br>' + '<strong>Relacion B:</strong> ' + '<br>' + Resultado2 + '<br>' + '<strong>Relacion C:</strong> ' + '<br>' + Resultado3;
+    resultadoContainer.innerHTML = '<strong>Relacion R1:</strong> ' + '<br>' + Resultado1 + '<br>' + '<strong>Relacion R2:</strong> ' + '<br>' + Resultado2 + '<br>' + '<strong>Relacion R3:</strong> ' + '<br>' + Resultado3;
 }
 
 function mostrarMatrizRelacion() {
