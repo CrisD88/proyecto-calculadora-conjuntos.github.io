@@ -1367,15 +1367,10 @@ function mostrarMatrizRelacion() {
     var tituloGeneralElemento = document.createElement('p');
     tituloGeneralElemento.textContent = tituloGeneralTexto;
 
-    // Crear el elemento de la nota y establecer su contenido
-    var notaElemento = document.createElement('p');
-    notaElemento.textContent = notaTexto;
-
     // Crear y agregar el título general y la nota al contenedor de resultado en la página
     var resultado = document.getElementById('resultado');
     resultado.innerHTML = ''; // Limpiar cualquier contenido previo
     resultado.appendChild(tituloGeneralElemento);
-    resultado.appendChild(notaElemento);
 
     // Matriz de relación R1
     if (relacionR1) {
